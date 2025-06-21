@@ -1,80 +1,166 @@
-<script>
-  const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
-  let allMovies = [];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movies | DKWeb</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
 
-  fetch(SHEET_URL)
-    .then(res => res.json())
-    .then(data => {
-      allMovies = data.filter(item => item.Name);
-      populateFilters(allMovies);
-      renderMovies(allMovies);
-    });
+    header {
+      padding: 1.5rem;
+      background-color: #1a1a2e;
+      color: white;
+    }
 
-  function populateFilters(data) {
-    const genreSet = new Set();
-    const platformSet = new Set();
+    h1 {
+      margin: 0.5rem 0;
+    }
 
-    data.forEach(item => {
-      if (item.Genre) {
-        item.Genre.split("/").forEach(g => genreSet.add(g.trim()));
-      }
-      if (item.Platform) {
-        item.Platform.split("/").forEach(p => platformSet.add(p.trim()));
-      }
-    });
+    .filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
 
-    const genreFilter = document.getElementById("genreFilter");
-    const platformFilter = document.getElementById("platformFilter");
+    select {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
 
-    genreSet.forEach(genre => {
-      const option = document.createElement("option");
-      option.value = genre;
-      option.textContent = genre;
-      genreFilter.appendChild(option);
-    });
+    #showGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
 
-    platformSet.forEach(platform => {
-      const option = document.createElement("option");
-      option.value = platform;
-      option.textContent = platform;
-      platformFilter.appendChild(option);
-    });
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+    }
 
-    genreFilter.addEventListener("change", filterMovies);
-    platformFilter.addEventListener("change", filterMovies);
-  }
+    .card h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
 
-  function filterMovies() {
-    const genreVal = document.getElementById("genreFilter").value;
-    const platformVal = document.getElementById("platformFilter").value;
+    .rating {
+      font-weight: bold;
+      color: #f39c12;
+    }
+  </style>
+</head>
+<body>
 
-    const filtered = allMovies.filter(item => {
-      const genres = item.Genre ? item.Genre.split("/").map(g => g.trim()) : [];
-      const platforms = item.Platform ? item.Platform.split("/").map(p => p.trim()) : [];
+  <header>
+    <h1>🎬 Movie Recommendations</h1>
+    <p>Use filters below to find movies by genre or platform</p>
+  </header>
 
-      const genreMatch = genreVal === "" || genres.includes(genreVal);
-      const platformMatch = platformVal === "" || platforms.includes(platformVal);
+  <div class="filters">
+    <select id="genreFilter">
+      <option value="">Filter by Genre</option>
+    </select>
+    <select id="platformFilter">
+      <option value="">Filter by Platform</option>
+    </select>
+  </div>
 
-      return genreMatch && platformMatch;
-    });
+  <div id="showGrid"></div>
 
-    renderMovies(filtered);
-  }
+  <script>
+    const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
+    let allMovies = [];
 
-  function renderMovies(data) {
-    const container = document.getElementById("showGrid");
-    container.innerHTML = "";
+    fetch(SHEET_URL)
+      .then(res => res.json())
+      .then(data => {
+        allMovies = data.filter(item => item.Name);
+        populateFilters(allMovies);
+        renderMovies(allMovies);
+      });
 
-    data.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${item.Name}</h3>
-        <p>🎭 ${item.Genre}</p>
-        <p>📺 ${item.Platform}</p>
-        <p class="rating">⭐ ${item.Rating}</p>
-      `;
-      container.appendChild(card);
-    });
-  }
-</script>
+    function populateFilters(data) {
+      const genreSet = new Set();
+      const platformSet = new Set();
+
+      data.forEach(item => {
+        if (item.Genre) {
+          item.Genre.split("/").forEach(g => genreSet.add(g.trim()));
+        }
+        if (item.Platform) {
+          item.Platform.split("/").forEach(p => platformSet.add(p.trim()));
+        }
+      });
+
+      const genreFilter = document.getElementById("genreFilter");
+      const platformFilter = document.getElementById("platformFilter");
+
+      genreSet.forEach(genre => {
+        const option = document.createElement("option");
+        option.value = genre;
+        option.textContent = genre;
+        genreFilter.appendChild(option);
+      });
+
+      platformSet.forEach(platform => {
+        const option = document.createElement("option");
+        option.value = platform;
+        option.textContent = platform;
+        platformFilter.appendChild(option);
+      });
+
+      genreFilter.addEventListener("change", filterMovies);
+      platformFilter.addEventListener("change", filterMovies);
+    }
+
+    function filterMovies() {
+      const genreVal = document.getElementById("genreFilter").value;
+      const platformVal = document.getElementById("platformFilter").value;
+
+      const filtered = allMovies.filter(item => {
+        const genres = item.Genre ? item.Genre.split("/").map(g => g.trim()) : [];
+        const platforms = item.Platform ? item.Platform.split("/").map(p => p.trim()) : [];
+
+        const genreMatch = genreVal === "" || genres.includes(genreVal);
+        const platformMatch = platformVal === "" || platforms.includes(platformVal);
+
+        return genreMatch && platformMatch;
+      });
+
+      renderMovies(filtered);
+    }
+
+    function renderMovies(data) {
+      const container = document.getElementById("showGrid");
+      container.innerHTML = "";
+
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${item.Name}</h3>
+          <p>🎭 ${item.Genre}</p>
+          <p>📺 ${item.Platform}</p>
+          <p class="rating">⭐ ${item.Rating}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
+
+</body>
+</html>
