@@ -2,128 +2,156 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TV Series - DKWeb</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DKWeb - TV Series</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f5f7fa;
-      padding: 2rem;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
       margin: 0;
+      padding: 0;
     }
-    h1 {
+
+    header {
+      background-color: #1a1a2e;
+      color: white;
+      padding: 1.5rem;
       text-align: center;
-      margin-bottom: 1.5rem;
     }
+
     .filters {
-      text-align: center;
-      margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem;
+      flex-wrap: wrap;
     }
+
     select {
-      padding: 0.5rem;
-      margin: 0 1rem;
+      padding: 0.5rem 1rem;
       font-size: 1rem;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
+      padding: 1.5rem;
     }
+
     .card {
-      background-color: #ffffff;
+      background: white;
       border-radius: 12px;
       padding: 1rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
     }
+
     .card h3 {
       margin: 0.5rem 0;
     }
-    .card p {
-      margin: 0.25rem 0;
-      font-size: 0.95rem;
-      color: #333;
+
+    .rating {
+      background-color: #ffd700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>TV Series Collection</h1>
+
+  <header>
+    <h1>📺 TV Series Collection</h1>
+    <p>Filtered by Genre & Platform from Google Sheet</p>
+  </header>
+
   <div class="filters">
     <select id="genreFilter">
-      <option value="">Filter by Genre</option>
+      <option value="">All Genres</option>
     </select>
     <select id="platformFilter">
-      <option value="">Filter by Platform</option>
+      <option value="">All Platforms</option>
     </select>
   </div>
-  <div class="grid" id="tvList"></div>
+
+  <div class="grid" id="showGrid">
+    <!-- TV series cards will appear here -->
+  </div>
 
   <script>
-    const API_URL = "https://api.sheetbest.com/sheets/48ba8130-faac-45f3-b8cb-b13c09f6aa14";
+    const SHEET_URL = "https://api.sheetbest.com/sheets/48ba8130-faac-45f3-b8cb-b13c09f6aa14";
+    let allShows = [];
 
-    let seriesData = [];
-
-    async function fetchData() {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      seriesData = data;
-      populateFilters(data);
-      displayData(data);
-    }
+    fetch(SHEET_URL)
+      .then(res => res.json())
+      .then(data => {
+        allShows = data.filter(item => item.Name); // Only valid rows
+        populateFilters(allShows);
+        renderShows(allShows);
+      });
 
     function populateFilters(data) {
-      const genres = [...new Set(data.map(item => item.Genre).filter(Boolean))];
-      const platforms = [...new Set(data.map(item => item.Platform).filter(Boolean))];
+      const genreSet = new Set();
+      const platformSet = new Set();
 
-      const genreSelect = document.getElementById("genreFilter");
-      genres.forEach(g => {
-        const opt = document.createElement("option");
-        opt.value = g;
-        opt.textContent = g;
-        genreSelect.appendChild(opt);
+      data.forEach(item => {
+        if (item.Genre) genreSet.add(item.Genre.trim());
+        if (item.Platform) platformSet.add(item.Platform.trim());
       });
 
-      const platformSelect = document.getElementById("platformFilter");
-      platforms.forEach(p => {
-        const opt = document.createElement("option");
-        opt.value = p;
-        opt.textContent = p;
-        platformSelect.appendChild(opt);
+      const genreFilter = document.getElementById("genreFilter");
+      const platformFilter = document.getElementById("platformFilter");
+
+      genreSet.forEach(genre => {
+        const option = document.createElement("option");
+        option.value = genre;
+        option.textContent = genre;
+        genreFilter.appendChild(option);
       });
 
-      genreSelect.addEventListener("change", applyFilters);
-      platformSelect.addEventListener("change", applyFilters);
+      platformSet.forEach(platform => {
+        const option = document.createElement("option");
+        option.value = platform;
+        option.textContent = platform;
+        platformFilter.appendChild(option);
+      });
+
+      genreFilter.addEventListener("change", filterShows);
+      platformFilter.addEventListener("change", filterShows);
     }
 
-    function applyFilters() {
-      const genre = document.getElementById("genreFilter").value;
-      const platform = document.getElementById("platformFilter").value;
+    function filterShows() {
+      const genreVal = document.getElementById("genreFilter").value;
+      const platformVal = document.getElementById("platformFilter").value;
 
-      const filtered = seriesData.filter(item => {
-        return (!genre || item.Genre === genre) && (!platform || item.Platform === platform);
+      const filtered = allShows.filter(item => {
+        return (genreVal === "" || item.Genre === genreVal) &&
+               (platformVal === "" || item.Platform === platformVal);
       });
 
-      displayData(filtered);
+      renderShows(filtered);
     }
 
-    function displayData(data) {
-      const container = document.getElementById("tvList");
+    function renderShows(data) {
+      const container = document.getElementById("showGrid");
       container.innerHTML = "";
+
       data.forEach(item => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
           <h3>${item.Name}</h3>
-          <p><strong>Genre:</strong> ${item.Genre}</p>
-          <p><strong>Platform:</strong> ${item.Platform}</p>
-          <p><strong>Rating:</strong> ⭐ ${item.Rating}</p>
+          <p>🎭 ${item.Genre}</p>
+          <p>📺 ${item.Platform}</p>
+          <p class="rating">⭐ ${item.Rating}</p>
         `;
         container.appendChild(card);
       });
     }
-
-    fetchData();
   </script>
+
 </body>
 </html>
