@@ -1,116 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DKWEB</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DKWeb - Home</title>
   <style>
-    * {
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-    body {
-      background-color: #f7f7f7;
-      padding: 2rem;
-      color: #222;
-    }
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-    }
-    .intro {
-      flex: 1 1 400px;
-      padding: 2rem;
-    }
-    .intro h1 {
-      font-size: 3rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
-    }
-    .intro p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      max-width: 500px;
-    }
-    .portrait {
-      flex: 1 1 300px;
       text-align: center;
     }
-    .portrait img {
-      width: 300px;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 50%;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    header {
+      padding: 1rem;
+      background-color: #1a1a2e;
+      color: white;
     }
+
+    .hero {
+      background: url('your-hero-image.jpg') center/cover no-repeat;
+      padding: 3rem 1rem;
+    }
+
+    h1 {
+      margin: 1rem 0;
+      font-size: 2.5rem;
+    }
+
     .tabs {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 3rem;
-      gap: 1.5rem;
+      gap: 1rem;
+      margin: 2rem;
     }
+
     .tab {
-      width: 120px;
-      height: 120px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      padding: 1rem 1.5rem;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 600;
-      font-size: 1rem;
-      color: #000;
-      text-align: center;
-      text-decoration: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
+      width: 100px;
+      height: 100px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s;
     }
+
     .tab:hover {
       transform: scale(1.05);
     }
-    .yellow { background-color: #f4c430; }
-    .blue { background-color: #48c9e2; }
-    .red { background-color: #ff5a3d; }
-    .green { background-color: #3cc29f; }
 
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column-reverse;
-        text-align: center;
-      }
-      .intro h1 {
-        font-size: 2.5rem;
-      }
-    }
+    .yellow { background-color: #fbc02d; }
+    .blue   { background-color: #1976d2; }
+    .red    { background-color: #e53935; }
+    .green  { background-color: #43a047; }
+    .purple { background-color: #8e24aa; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="portrait">
-      <img src="your-image.jpg" alt="DK Portrait">
-    </div>
-    <div class="intro">
-      <h1>Hello</h1>
-      <p>A Bit About Me<br>
-      I'm DK. This site is my creative hub — a mix of my favorite movies, personal music compositions, tech knowledge, AI tools, and more. Scroll through and explore!</p>
-    </div>
-  </div>
+
+  <header>
+    <h1>Welcome to DKWeb</h1>
+    <p>Your personal space for movies, music, tech, and creativity</p>
+  </header>
 
   <div class="tabs">
-    <a href="#" class="tab yellow">MOVIES</a>
-    <a href="#" class="tab blue">TV SERIES</<a href="tvseries.html" class="tab blue">TV SERIES</a>>
-    <a href="#" class="tab red">MY SONGS</a>
-    <a href="#" class="tab blue">TECH CORNER</a>
-    <a href="#" class="tab yellow">AI</a>
-    <a href="#" class="tab red">BLOG</a>
-    <a href="#" class="tab green">CONTACT</a>
+    <a href="movies.html" class="tab yellow">MOVIES</a>
+    <a href="tvseries.html" class="tab blue">TV SERIES</a>
+    <a href="songs.html" class="tab red">MY SONGS</a>
+    <a href="tech.html" class="tab blue">TECH CORNER</a>
+    <a href="ai.html" class="tab yellow">AI</a>
+    <a href="blog.html" class="tab red">BLOG</a>
+    <a href="contact.html" class="tab green">CONTACT</a>
   </div>
+
 </body>
 </html>
