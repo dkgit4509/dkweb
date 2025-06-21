@@ -1,99 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DKWeb - Movies</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
+<script>
+  const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
+  let allMovies = [];
 
-    header {
-      background-color: #1a1a2e;
-      color: white;
-      padding: 1.5rem;
-      text-align: center;
-    }
+  fetch(SHEET_URL)
+    .then(res => res.json())
+    .then(data => {
+      allMovies = data.filter(item => item.Name);
+      populateFilters(allMovies);
+      renderMovies(allMovies);
+    });
 
-    .filters {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin: 1rem;
-      flex-wrap: wrap;
-    }
+  function populateFilters(data) {
+    const genreSet = new Set();
+    const platformSet = new Set();
 
-    select {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-    }
+    data.forEach(item => {
+      if (item.Genre) {
+        item.Genre.split("/").forEach(g => genreSet.add(g.trim()));
+      }
+      if (item.Platform) {
+        item.Platform.split("/").forEach(p => platformSet.add(p.trim()));
+      }
+    });
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1.5rem;
-      padding: 1.5rem;
-    }
+    const genreFilter = document.getElementById("genreFilter");
+    const platformFilter = document.getElementById("platformFilter");
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
+    genreSet.forEach(genre => {
+      const option = document.createElement("option");
+      option.value = genre;
+      option.textContent = genre;
+      genreFilter.appendChild(option);
+    });
 
-    .card h3 {
-      margin: 0.5rem 0;
-    }
+    platformSet.forEach(platform => {
+      const option = document.createElement("option");
+      option.value = platform;
+      option.textContent = platform;
+      platformFilter.appendChild(option);
+    });
 
-    .rating {
-      background-color: #ffd700;
-      padding: 0.2rem 0.5rem;
-      border-radius: 5px;
-      display: inline-block;
-      margin-top: 0.5rem;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
+    genreFilter.addEventListener("change", filterMovies);
+    platformFilter.addEventListener("change", filterMovies);
+  }
 
-  <header>
-    <h1>🎬 Movie Recommendations</h1>
-    <p>Filtered by Genre & Platform from Google Sheet</p>
-  </header>
+  function filterMovies() {
+    const genreVal = document.getElementById("genreFilter").value;
+    const platformVal = document.getElementById("platformFilter").value;
 
-  <div class="filters">
-    <select id="genreFilter">
-      <option value="">All Genres</option>
-    </select>
-    <select id="platformFilter">
-      <option value="">All Platforms</option>
-    </select>
-  </div>
+    const filtered = allMovies.filter(item => {
+      const genres = item.Genre ? item.Genre.split("/").map(g => g.trim()) : [];
+      const platforms = item.Platform ? item.Platform.split("/").map(p => p.trim()) : [];
 
-  <div class="grid" id="movieGrid">
-    <!-- Movie cards will appear here -->
-  </div>
+      const genreMatch = genreVal === "" || genres.includes(genreVal);
+      const platformMatch = platformVal === "" || platforms.includes(platformVal);
 
-  <script>
-    const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
+      return genreMatch && platformMatch;
+    });
 
-    let allMovies = [];
+    renderMovies(filtered);
+  }
 
-    fetch(SHEET_URL)
-      .then(res => res.json())
-      .then(data => {
-        allMovies = data;
-        populateFilters(data);
-        renderMovies(data);
-      });
+  function renderMovies(data) {
+    const container = document.getElementById("showGrid");
+    container.innerHTML = "";
 
-    function populateFilters(data) {
-      const genres = [...new Set(data.map(item => item.Genre).filter(Boolean))];
-      const platforms = [...new Set(data.map(item => item.Platform).filter(Boolean))];
+    data.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>${item.Name}</h3>
+        <p>🎭 ${item.Genre}</p>
+        <p>📺 ${item.Platform}</p>
+        <p class="rating">⭐ ${item.Rating}</p>
+      `;
+      container.appendChild(card);
+    });
+  }
+</script>
