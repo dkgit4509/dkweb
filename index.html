@@ -4,18 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DKWeb - Home</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom right, #d3d3d3, #a9a9a9);
       margin: 0;
       padding: 0;
       text-align: center;
+      background-color: #e6e6e6;
     }
 
     header {
-      padding: 1rem;
+      padding: 2rem 1rem;
       background-color: #1a1a2e;
       color: white;
     }
@@ -29,35 +28,34 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 1.2rem;
       margin: 2rem;
     }
 
     .tab {
       text-decoration: none;
-      color: #1a1a2e;
+      color: black;
       font-weight: bold;
-      width: 120px;
-      height: 120px;
+      padding: 1rem 1.5rem;
+      border: 3px solid;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 3px solid;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease, background-color 0.3s ease;
-      position: relative;
-    }
-
-    .tab:hover {
-      transform: scale(1.08);
-      background-color: rgba(255,255,255,0.1);
+      width: 120px;
+      height: 120px;
+      font-size: 0.9rem;
+      transition: transform 0.2s;
+      background-color: white;
     }
 
     .tab span {
-      transform: rotate(-90deg);
-      writing-mode: vertical-rl;
-      text-align: center;
+      transform: rotate(0deg);
+      writing-mode: vertical-lr;
+    }
+
+    .tab:hover {
+      transform: scale(1.05);
     }
 
     .yellow-outline { border-color: #fbc02d; }
@@ -65,8 +63,39 @@
     .red-outline    { border-color: #e53935; }
     .green-outline  { border-color: #43a047; }
     .purple-outline { border-color: #8e24aa; }
-    .orange-outline { border-color: #fb8c00; }
-    .teal-outline   { border-color: #00897b; }
+    .teal-outline   { border-color: #00796b; }
+
+    section {
+      background-color: #e6e6e6;
+      padding: 2rem 1rem;
+    }
+
+    #about p, #contact p {
+      max-width: 700px;
+      margin: auto;
+      font-size: 1.1rem;
+      color: #222;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #1a1a2e;
+    }
+
+    .contact-buttons a {
+      padding: 1rem 2rem;
+      margin: 0.5rem;
+      display: inline-block;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+
+    .whatsapp { background-color: #25D366; }
+    .instagram { background-color: #E1306C; }
+    .email { background-color: #1976d2; }
   </style>
 </head>
 <body>
@@ -82,41 +111,32 @@
     <a href="songs.html" class="tab red-outline"><span>MY SONGS</span></a>
     <a href="tech.html" class="tab green-outline"><span>TECH CORNER</span></a>
     <a href="ai.html" class="tab purple-outline"><span>AI</span></a>
-    <a href="blog.html" class="tab orange-outline"><span>BLOG</span></a>
+    <a href="blog.html" class="tab yellow-outline"><span>BLOG</span></a>
     <a href="poetry.html" class="tab teal-outline"><span>POETRIES & SCRIPTS</span></a>
-    <a href="contact.html" class="tab yellow-outline"><span>CONTACT</span></a>
+    <a href="#contact" class="tab yellow-outline"><span>CONTACT</span></a>
   </div>
+
+  <section id="about">
+    <h2>🧠 About Me</h2>
+    <p>
+      Welcome to DKWeb! I'm a multi-skilled digital creator blending technology, design, and music.  
+      This space is a reflection of my journey through cloud computing, system engineering, and creative expression.
+      <br><br>
+      On this site, you’ll find original music compositions, handpicked movie recommendations, tech solutions, and AI experiments —  
+      all crafted to entertain, inspire, or help you learn something new.
+      <br><br>
+      Thanks for stopping by — feel free to explore and connect!
+    </p>
+  </section>
+
+  <section id="contact">
+    <h2>📬 Contact Me</h2>
+    <div class="contact-buttons">
+      <a href="https://wa.me/918175996960" class="whatsapp" target="_blank">WhatsApp</a>
+      <a href="https://instagram.com/batbotdk09" class="instagram" target="_blank">Instagram</a>
+      <a href="mailto:dileepkryadav09@gmail.com" class="email">Email</a>
+    </div>
+  </section>
 
 </body>
 </html>
-<section style="padding: 2rem; background-color: #f0f0f0; text-align: center;">
-  <h2>🧠 About Me</h2>
-  <p style="max-width: 700px; margin: auto; font-size: 1.1rem;">
-    Welcome to DKWeb! I'm a multi-skilled digital creator blending technology, design, and music.  
-    This space is a reflection of my journey through cloud computing, system engineering, and creative expression.
-    <br><br>
-    On this site, you’ll find original music compositions, handpicked movie recommendations, tech solutions, and AI experiments —  
-    all crafted to entertain, inspire, or help you learn something new.  
-    <br><br>
-    Thanks for stopping by — feel free to explore and connect!
-  </p>
-</section>
-<section style="padding: 2rem; text-align: center;">
-  <h2>📬 Contact Me</h2>
-  <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
-
-    <a href="https://wa.me/918175996960" target="_blank" style="padding: 1rem 2rem; background-color: #25D366; color: white; border-radius: 8px; text-decoration: none;">
-      WhatsApp
-    </a>
-
-    <a href="https://instagram.com/batbotdk09" target="_blank" style="padding: 1rem 2rem; background-color: #E1306C; color: white; border-radius: 8px; text-decoration: none;">
-      Instagram
-    </a>
-
-    <a href="mailto:dileepkryadav09@gmail.com" style="padding: 1rem 2rem; background-color: #1976d2; color: white; border-radius: 8px; text-decoration: none;">
-      Email
-    </a>
-
-  </div>
-</section>
-
