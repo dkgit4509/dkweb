@@ -5,7 +5,7 @@
   <title>DKWeb Landing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body, html {
+    html, body {
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -18,63 +18,37 @@
     .plane {
       position: absolute;
       width: 300px;
-      right: -350px;
-      bottom: 120px;
+      right: -400px;
+      bottom: 115px;
       transform: rotate(0deg);
       animation: takeoff 8s ease-in forwards;
     }
 
     @keyframes takeoff {
       0% {
-        right: -350px;
-        bottom: 120px;
-        transform: scale(1) rotate(0deg);
-        opacity: 1;
+        right: -400px;
+        bottom: 115px;
+        transform: rotate(0deg) scale(1);
       }
-      50% {
+      40% {
         right: 45%;
-        bottom: 120px;
-        transform: scale(1.1) rotate(0deg);
+        bottom: 115px;
+        transform: rotate(0deg) scale(1.05);
       }
-      75% {
+      60% {
         right: 65%;
-        bottom: 160px;
-        transform: scale(1.1) rotate(-10deg); /* Nosed up */
+        bottom: 130px;
+        transform: rotate(-10deg) scale(1.1); /* Nose lifts up */
+      }
+      80% {
+        right: 90%;
+        bottom: 200px;
+        transform: rotate(-15deg) scale(1.15);
       }
       100% {
         right: 120%;
         bottom: 300px;
-        transform: scale(1.2) rotate(-15deg); /* Taking off */
-        opacity: 0;
-      }
-    }
-
-    .smoke {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background: radial-gradient(white, transparent);
-      border-radius: 50%;
-      bottom: 150px;
-      right: 80px;
-      opacity: 0.6;
-      animation: smokeTrail 8s ease-out forwards;
-    }
-
-    @keyframes smokeTrail {
-      0% {
-        bottom: 130px;
-        right: -300px;
-        opacity: 0.5;
-      }
-      50% {
-        bottom: 140px;
-        right: 45%;
-        opacity: 0.4;
-      }
-      100% {
-        bottom: 160px;
-        right: 120%;
+        transform: rotate(-20deg) scale(1.2);
         opacity: 0;
       }
     }
@@ -93,9 +67,9 @@
 
     @keyframes fadeText {
       0% { opacity: 0; transform: scale(0.9); }
-      30% { opacity: 1; transform: scale(1); }
+      20% { opacity: 1; transform: scale(1); }
       80% { opacity: 1; }
-      100% { opacity: 0; transform: scale(1.1); }
+      100% { opacity: 0; transform: scale(1.05); }
     }
   </style>
 </head>
@@ -103,12 +77,11 @@
 
   <div class="overlay-text">🛫 You are taking off on DKWeb</div>
   <img src="plane.png" class="plane" alt="plane">
-  <div class="smoke"></div>
 
   <script>
     setTimeout(() => {
       window.location.href = "home.html";
-    }, 8500); // wait for animation
+    }, 8500);
   </script>
 </body>
 </html>
