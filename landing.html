@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DKWeb – Landing</title>
   <style>
     body {
@@ -17,41 +17,29 @@
     #plane {
       position: absolute;
       bottom: 50px;
-      left: -200px;
+      left: 100%; /* Start just outside right edge */
       width: 150px;
       height: auto;
-      animation: takeoff 5s forwards ease-in-out;
+      animation: flyLeft 5s linear forwards;
     }
 
-    @keyframes takeoff {
-      0% {
-        left: -200px;
-        bottom: 50px;
-        transform: rotate(0deg);
+    @keyframes flyLeft {
+      from {
+        left: 100%; /* Right edge */
       }
-      50% {
-        left: 40vw;
-        bottom: 100px;
-        transform: rotate(-10deg);
-      }
-      100% {
-        left: 100vw;
-        bottom: 300px;
-        transform: rotate(-25deg);
+      to {
+        left: -200px; /* Fly off to the left */
       }
     }
   </style>
 </head>
 <body>
-
-  <img id="plane" src="plane.png" alt="Plane" />
+  <img src="plane.png" alt="Plane" id="plane">
 
   <script>
-    // Redirect after animation completes
     setTimeout(() => {
       window.location.href = "index.html";
-    }, 5500);
+    }, 5200); // Redirect after animation
   </script>
-
 </body>
 </html>
