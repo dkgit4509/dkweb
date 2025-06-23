@@ -20,7 +20,25 @@
       left: -200px;
       width: 150px;
       height: auto;
-      transition: transform 5s linear, left 5s linear;
+      animation: takeoff 5s forwards ease-in-out;
+    }
+
+    @keyframes takeoff {
+      0% {
+        left: -200px;
+        bottom: 50px;
+        transform: rotate(0deg);
+      }
+      50% {
+        left: 40vw;
+        bottom: 100px;
+        transform: rotate(-10deg);
+      }
+      100% {
+        left: 100vw;
+        bottom: 300px;
+        transform: rotate(-25deg);
+      }
     }
   </style>
 </head>
@@ -29,17 +47,10 @@
   <img id="plane" src="plane.png" alt="Plane" />
 
   <script>
-    const plane = document.getElementById("plane");
-
-    setTimeout(() => {
-      plane.style.left = "100vw";
-      plane.style.transform = "translateY(-200px) rotate(-20deg)";
-    }, 500);
-
-    // Redirect to homepage after animation
+    // Redirect after animation completes
     setTimeout(() => {
       window.location.href = "index.html";
-    }, 6000);
+    }, 5500);
   </script>
 
 </body>
