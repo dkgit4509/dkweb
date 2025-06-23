@@ -2,60 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DKWeb Landing</title>
+  <title>DKWeb Takeoff</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       overflow: hidden;
+      height: 100vh;
       background: url('runway.png') no-repeat center center;
       background-size: cover;
-      height: 100vh;
       font-family: sans-serif;
     }
 
     .plane {
       position: absolute;
-      width: 300px;
+      width: 320px;
       right: -400px;
-      bottom: 115px;
+      bottom: 180px; /* ↑ Adjusted position for middle alignment */
       transform: rotate(0deg);
-      animation: takeoff 8s ease-in forwards;
+      animation: takeoff 8s ease-in-out forwards;
     }
 
     @keyframes takeoff {
       0% {
         right: -400px;
-        bottom: 115px;
-        transform: rotate(0deg) scale(1);
+        bottom: 180px;
+        transform: rotate(0deg);
       }
-      40% {
-        right: 45%;
-        bottom: 115px;
-        transform: rotate(0deg) scale(1.05);
+      30% {
+        right: 50%;
+        bottom: 180px;
+        transform: rotate(0deg);
       }
       60% {
-        right: 65%;
-        bottom: 130px;
-        transform: rotate(-10deg) scale(1.1); /* Nose lifts up */
+        right: 70%;
+        bottom: 220px;
+        transform: rotate(-10deg); /* nose up */
       }
-      80% {
-        right: 90%;
-        bottom: 200px;
-        transform: rotate(-15deg) scale(1.15);
+      90% {
+        right: 95%;
+        bottom: 300px;
+        transform: rotate(-20deg);
       }
       100% {
         right: 120%;
-        bottom: 300px;
-        transform: rotate(-20deg) scale(1.2);
-        opacity: 0;
+        bottom: 380px;
+        transform: rotate(-25deg);
       }
     }
 
     .overlay-text {
       position: absolute;
-      top: 30%;
+      top: 28%;
       width: 100%;
       text-align: center;
       font-size: 2.5rem;
@@ -83,5 +82,6 @@
       window.location.href = "home.html";
     }, 8500);
   </script>
+
 </body>
 </html>
