@@ -3,63 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DK Webway - Landing</title>
-
+  <title>DKWeb – Landing</title>
   <style>
-    body, html {
+    body {
       margin: 0;
-      padding: 0;
       overflow: hidden;
-      height: 100vh;
-      width: 100vw;
-    }
-
-    .container {
-      background: url('runway.jpg') no-repeat center center fixed;
+      background: url("runway.png") center center no-repeat;
       background-size: cover;
+      height: 100vh;
       position: relative;
-      width: 100%;
-      height: 100%;
     }
 
-    .plane {
+    #plane {
       position: absolute;
-      bottom: 80px;
-      right: -300px;
+      bottom: 50px;
+      left: -200px;
       width: 150px;
-      transform: rotate(0deg);
-      animation: takeoff 5s ease-in-out forwards;
-    }
-
-    @keyframes takeoff {
-      0% {
-        right: -300px;
-        bottom: 80px;
-        transform: rotate(0deg);
-      }
-      50% {
-        right: 50%;
-        bottom: 100px;
-        transform: rotate(-10deg);
-      }
-      100% {
-        right: 120%;
-        bottom: 300px;
-        transform: rotate(-20deg);
-      }
+      height: auto;
+      transition: transform 5s linear, left 5s linear;
     }
   </style>
+</head>
+<body>
+
+  <img id="plane" src="plane.png" alt="Plane" />
 
   <script>
-    // Redirect to homepage after 6 seconds
+    const plane = document.getElementById("plane");
+
+    setTimeout(() => {
+      plane.style.left = "100vw";
+      plane.style.transform = "translateY(-200px) rotate(-20deg)";
+    }, 500);
+
+    // Redirect to homepage after animation
     setTimeout(() => {
       window.location.href = "index.html";
     }, 6000);
   </script>
-</head>
-<body>
-  <div class="container">
-    <img src="plane.png" alt="Plane" class="plane" />
-  </div>
+
 </body>
 </html>
