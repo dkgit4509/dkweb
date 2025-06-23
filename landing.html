@@ -22,30 +22,37 @@
       z-index: 0;
     }
 
-    .plane {
+    .plane-container {
       position: absolute;
-      bottom: 17%; /* Position plane closer to 'DK WEBWAY' */
-      right: -400px; /* Start off-screen */
+      bottom: 17%;
+      right: -250px;
       width: 200px;
-      transform: scale(2.2); /* Zoom in */
+      height: 100px;
+      transform: scale(2.2);
       z-index: 2;
+      animation: takeoff 6s ease-in-out forwards;
+    }
+
+    .plane {
+      width: 100%;
+      height: auto;
     }
 
     .smoke {
       position: absolute;
-      width: 60px;
-      height: 60px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: rgba(200, 200, 200, 0.5);
       filter: blur(8px);
       animation: smokeTrail 1s infinite;
-      bottom: 18%;
-      right: 200px;
+      bottom: 10%;
+      right: 180px;
       z-index: 1;
     }
 
     @keyframes smokeTrail {
-      0% { transform: scale(1) translateY(0); opacity: 1; }
+      0% { transform: scale(1) translateY(0); opacity: 0.8; }
       100% { transform: scale(2) translateY(-40px); opacity: 0; }
     }
 
@@ -72,24 +79,24 @@
 
     @keyframes takeoff {
       0% {
-        right: -400px;
+        right: -250px;
         bottom: 17%;
         transform: scale(2.2) rotate(0deg);
       }
-      30% {
-        right: 50%;
+      40% {
+        right: 40%;
         bottom: 17%;
         transform: scale(2.2) rotate(0deg);
       }
-      60% {
+      70% {
         right: 90%;
         bottom: 30%;
-        transform: scale(2.2) rotate(-10deg);
+        transform: scale(2.2) rotate(10deg); /* nose up */
       }
       100% {
         right: 120%;
         bottom: 60%;
-        transform: scale(2.2) rotate(-20deg);
+        transform: scale(2.2) rotate(20deg); /* fly out */
       }
     }
   </style>
@@ -100,23 +107,14 @@
 
   <div class="overlay-text">🛫 You are taking off on <strong>DKWeb</strong></div>
 
-  <img src="plane.png" id="plane" class="plane" />
-  <div class="smoke" id="smoke"></div>
+  <!-- Plane container includes plane and smoke -->
+  <div class="plane-container" id="planeContainer">
+    <img src="plane.png" class="plane" />
+    <div class="smoke"></div>
+  </div>
 
   <script>
-    const plane = document.getElementById("plane");
-    const smoke = document.getElementById("smoke");
-
-    setTimeout(() => {
-      plane.style.animation = "takeoff 6s ease-in-out forwards";
-    }, 500);
-
-    // Remove smoke effect after takeoff
-    setTimeout(() => {
-      smoke.style.display = "none";
-    }, 5000);
-
-    // Redirect to homepage
+    // Redirect to index.html after animation
     setTimeout(() => {
       window.location.href = "index.html";
     }, 7000);
