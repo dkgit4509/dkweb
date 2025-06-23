@@ -2,123 +2,121 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>DKWeb – Taking Off</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Taking Off - DKWeb</title>
   <style>
-    html, body {
+    body, html {
       margin: 0;
       padding: 0;
       overflow: hidden;
-      width: 100%;
-      height: 100%;
-    }
-
-    .background {
-      background: url('runway.png') no-repeat center center;
-      background-size: cover;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    .plane-container {
-      position: absolute;
-      bottom: 17%;
-      right: -250px;
-      width: 200px;
-      height: 100px;
-      transform: scale(2.2);
-      z-index: 2;
-      animation: takeoff 6s ease-in-out forwards;
-    }
-
-    .plane {
-      width: 100%;
-      height: auto;
-    }
-
-    .smoke {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(200, 200, 200, 0.5);
-      filter: blur(8px);
-      animation: smokeTrail 1s infinite;
-      bottom: 10%;
-      right: 180px;
-      z-index: 1;
-    }
-
-    @keyframes smokeTrail {
-      0% { transform: scale(1) translateY(0); opacity: 0.8; }
-      100% { transform: scale(2) translateY(-40px); opacity: 0; }
+      height: 100vh;
+      width: 100vw;
+      font-family: Arial, sans-serif;
+      background: url('runway.png') center/cover no-repeat;
+      position: relative;
     }
 
     .overlay-text {
       position: absolute;
-      top: 25%;
-      width: 100%;
-      text-align: center;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 2.5rem;
-      font-family: 'Arial Black', sans-serif;
       color: white;
-      text-shadow: 3px 3px 10px #000;
-      opacity: 0;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1rem 2rem;
+      border-radius: 10px;
       animation: fadeInOut 6s ease-in-out;
       z-index: 3;
     }
 
     @keyframes fadeInOut {
-      0% { opacity: 0; }
-      10% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { opacity: 0; }
+      0%   { opacity: 0; transform: translate(-50%, -30px); }
+      10%  { opacity: 1; transform: translate(-50%, 0); }
+      80%  { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -30px); }
+    }
+
+    .plane {
+      position: absolute;
+      width: 250px;
+      bottom: 80px;
+      right: -300px;
+      z-index: 2;
+      transform: rotate(0deg);
+      animation: takeoff 7s forwards;
     }
 
     @keyframes takeoff {
       0% {
-        right: -250px;
-        bottom: 17%;
-        transform: scale(2.2) rotate(0deg);
+        right: -300px;
+        bottom: 80px;
+        transform: rotate(0deg);
       }
-      40% {
-        right: 40%;
-        bottom: 17%;
-        transform: scale(2.2) rotate(0deg);
+      50% {
+        right: 50%;
+        bottom: 90px;
+        transform: rotate(0deg);
       }
-      70% {
-        right: 90%;
-        bottom: 30%;
-        transform: scale(2.2) rotate(10deg); /* nose up */
+      80% {
+        right: 70%;
+        bottom: 200px;
+        transform: rotate(-15deg);
       }
       100% {
         right: 120%;
-        bottom: 60%;
-        transform: scale(2.2) rotate(20deg); /* fly out */
+        bottom: 400px;
+        transform: rotate(-25deg);
+      }
+    }
+
+    .smoke {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(white, transparent);
+      border-radius: 50%;
+      opacity: 0.6;
+      z-index: 1;
+      animation: smokeTrail 2s infinite ease-out;
+    }
+
+    @keyframes smokeTrail {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translate(-30px, -50px) scale(2);
+        opacity: 0;
       }
     }
   </style>
 </head>
 <body>
+  <div class="overlay-text">🛫 You are taking off on DKWeb</div>
+  <img src="plane.png" class="plane" id="plane" />
 
-  <div class="background"></div>
-
-  <div class="overlay-text">🛫 You are taking off on <strong>DKWeb</strong></div>
-
-  <!-- Plane container includes plane and smoke -->
-  <div class="plane-container" id="planeContainer">
-    <img src="plane.png" class="plane" />
-    <div class="smoke"></div>
-  </div>
-
+  <!-- Smoke elements dynamically added -->
   <script>
-    // Redirect to index.html after animation
+    const plane = document.getElementById('plane');
+
+    function createSmoke() {
+      const smoke = document.createElement('div');
+      smoke.className = 'smoke';
+      smoke.style.bottom = parseInt(plane.style.bottom || '80px') + 20 + 'px';
+      smoke.style.right = parseInt(plane.style.right || '-300px') + 100 + 'px';
+      document.body.appendChild(smoke);
+      setTimeout(() => smoke.remove(), 2000);
+    }
+
+    let smokeInterval = setInterval(createSmoke, 200);
+
     setTimeout(() => {
-      window.location.href = "index.html";
+      clearInterval(smokeInterval);
+      window.location.href = 'home.html';
     }, 7000);
   </script>
-
 </body>
 </html>
