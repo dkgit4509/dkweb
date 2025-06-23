@@ -48,28 +48,30 @@
       animation: takeoff 7s forwards;
     }
 
-    @keyframes takeoff {
-      0% {
-        right: -300px;
-        bottom: 80px;
-        transform: rotate(0deg);
-      }
-      50% {
-        right: 50%;
-        bottom: 90px;
-        transform: rotate(0deg);
-      }
-      80% {
-        right: 70%;
-        bottom: 200px;
-        transform: rotate(-15deg);
-      }
-      100% {
-        right: 120%;
-        bottom: 400px;
-        transform: rotate(-25deg);
-      }
-    }
+  @keyframes takeoff {
+  0% {
+    right: -300px;
+    bottom: 80px;
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  60% {
+    right: 50%;
+    bottom: 80px;
+    transform: scale(1.2) rotate(0deg); /* no rotation yet */
+  }
+  80% {
+    right: 70%;
+    bottom: 150px;
+    transform: scale(1.2) rotate(-15deg); /* ✨ Nose-up lift */
+  }
+  100% {
+    right: 120%;
+    bottom: 300px;
+    transform: scale(1.2) rotate(-20deg);
+    opacity: 0;
+  }
+}
 
     .smoke {
       position: absolute;
