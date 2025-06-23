@@ -170,13 +170,23 @@
     <a href="#contact" class="tab yellow-outline">CONTACT</a>
   </div>
 
-  <!-- 🎥 Animated Miniatures -->
-  <div class="animations">
-    <lottie-player src="laptop-engineer.json" background="transparent" speed="1" loop autoplay></lottie-player>
-    <lottie-player src="jcb-digger.json" background="transparent" speed="1" loop autoplay></lottie-player>
-    <lottie-player src="jcb-construction.json" background="transparent" speed="1" loop autoplay></lottie-player>
-    <lottie-player src="ladder-worker.json" background="transparent" speed="1" loop autoplay></lottie-player>
+  <!-- 🎥 Animated Miniatures - Final Layout -->
+<div class="animations" style="position: relative; max-width: 1200px; margin: 2rem auto;">
+  <!-- Left Engineer -->
+  <div style="position: absolute; left: 0; bottom: 0;">
+    <lottie-player src="laptop-engineer.json" background="transparent" speed="1" loop autoplay style="width: 130px; height: 130px;"></lottie-player>
   </div>
+
+  <!-- Center JCB Cloud -->
+  <div style="margin: 0 auto; text-align: center;">
+    <lottie-player src="jcb-construction.json" background="transparent" speed="1" loop autoplay style="width: 180px; height: 180px;"></lottie-player>
+  </div>
+
+  <!-- Right Ladder Worker -->
+  <div style="position: absolute; right: 0; bottom: 0;">
+    <lottie-player src="ladder-worker.json" background="transparent" speed="1" loop autoplay style="width: 130px; height: 130px;"></lottie-player>
+  </div>
+</div>
 
   <section id="about">
     <h2>🧠 About Me</h2>
