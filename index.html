@@ -1,87 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DKWeb Takeoff</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html, body {
+    body, html {
       margin: 0;
       padding: 0;
       overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      width: 100vw;
       height: 100vh;
-      background: url('runway.png') no-repeat center center;
+      background: url("runway.png") no-repeat center center;
       background-size: cover;
-      font-family: sans-serif;
     }
 
     .plane {
       position: absolute;
-      width: 320px;
-      right: -400px;
-      bottom: 180px; /* ↑ Adjusted position for middle alignment */
-      transform: rotate(0deg);
-      animation: takeoff 8s ease-in-out forwards;
-    }
-
-    @keyframes takeoff {
-      0% {
-        right: -400px;
-        bottom: 180px;
-        transform: rotate(0deg);
-      }
-      30% {
-        right: 50%;
-        bottom: 180px;
-        transform: rotate(0deg);
-      }
-      60% {
-        right: 70%;
-        bottom: 220px;
-        transform: rotate(-10deg); /* nose up */
-      }
-      90% {
-        right: 95%;
-        bottom: 300px;
-        transform: rotate(-20deg);
-      }
-      100% {
-        right: 120%;
-        bottom: 380px;
-        transform: rotate(-25deg);
-      }
+      width: 15vw; /* adjust size based on screen */
+      max-width: 300px;
+      bottom: 12%;
+      right: -25vw;
+      transform-origin: 30% 70%; /* rotate from rear of plane */
+      animation: fly 5.5s ease-in-out forwards;
     }
 
     .overlay-text {
       position: absolute;
-      top: 28%;
+      top: 10%;
       width: 100%;
       text-align: center;
-      font-size: 2.5rem;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 2rem;
       color: white;
-      font-weight: bold;
-      text-shadow: 2px 2px 6px #000;
-      animation: fadeText 4s ease-in-out forwards;
+      text-shadow: 2px 2px 10px #000;
+      animation: textFade 4s ease-in-out forwards;
+      opacity: 0;
     }
 
-    @keyframes fadeText {
-      0% { opacity: 0; transform: scale(0.9); }
-      20% { opacity: 1; transform: scale(1); }
-      80% { opacity: 1; }
-      100% { opacity: 0; transform: scale(1.05); }
+    @keyframes textFade {
+      0% { opacity: 0; transform: translateY(20px); }
+      15% { opacity: 1; transform: translateY(0); }
+      85% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
+
+    @keyframes fly {
+      0% {
+        right: -25vw;
+        bottom: 12%;
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      40% {
+        right: 35vw;
+        bottom: 12%;
+        transform: rotate(0deg);
+        opacity: 1;
+      }
+      70% {
+        right: 55vw;
+        bottom: 22%;
+        transform: rotate(-20deg);
+        opacity: 1;
+      }
+      100% {
+        right: 110vw;
+        bottom: 60%;
+        transform: rotate(-30deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
-
-  <div class="overlay-text">🛫 You are taking off on DKWeb</div>
-  <img src="plane.png" class="plane" alt="plane">
+  <div class="container">
+    <img src="plane.png" class="plane" alt="Plane"/>
+    <div class="overlay-text">You are taking off on <strong>DKWeb</strong></div>
+  </div>
 
   <script>
     setTimeout(() => {
       window.location.href = "home.html";
-    }, 8500);
+    }, 6500); // redirect after animation
   </script>
-
 </body>
 </html>
