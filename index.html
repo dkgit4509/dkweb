@@ -4,9 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DKWeb - Home</title>
-
+  
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Atomic+Age&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Lottie Script -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
   <style>
     body {
@@ -17,18 +20,29 @@
       text-align: center;
     }
 
-    .banner {
-      background-color: #ffeb3b;
-      color: #000;
+    /* 🚧 Banner */
+    .construction-banner {
+      background: #ffcc00;
+      padding: 0.7rem 1rem;
       font-weight: bold;
-      font-size: 1.1rem;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 10px 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .construction-banner span {
+      display: inline-block;
+      animation: scrollBanner 12s linear infinite;
+    }
+
+    @keyframes scrollBanner {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
     }
 
     header {
-      padding: 2rem 1rem;
+      padding: 2rem 1rem 1rem;
       background-color: #1a1a2e;
       color: white;
     }
@@ -110,15 +124,34 @@
     .whatsapp { background-color: #25D366; }
     .instagram { background-color: #E1306C; }
     .email { background-color: #1976d2; }
+
+    /* 🎬 Animations Section */
+    .animations {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem auto;
+      max-width: 1000px;
+    }
+
+    .animations lottie-player {
+      width: 180px;
+      height: 180px;
+    }
+
+    @media (max-width: 600px) {
+      .animations lottie-player {
+        width: 120px;
+        height: 120px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- 🚧 Scrolling Construction Banner -->
-  <div class="banner">
-    <marquee scrollamount="6" behavior="scroll">
-      🚧 👷‍♂️ DKWeb is under creative construction. Please stand by... 🚧
-    </marquee>
+  <div class="construction-banner">
+    <span>🚧 👷‍♂️ DKWeb is under creative construction. Please stand by... 🚧</span>
   </div>
 
   <header>
@@ -135,6 +168,14 @@
     <a href="blog.html" class="tab yellow-outline">BLOG</a>
     <a href="poetry.html" class="tab teal-outline">POETRIES & SCRIPTS</a>
     <a href="#contact" class="tab yellow-outline">CONTACT</a>
+  </div>
+
+  <!-- 🎥 Animated Miniatures -->
+  <div class="animations">
+    <lottie-player src="laptop-engineer.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    <lottie-player src="jcb-digger.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    <lottie-player src="jcb-construction.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    <lottie-player src="ladder-worker.json" background="transparent" speed="1" loop autoplay></lottie-player>
   </div>
 
   <section id="about">
