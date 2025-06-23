@@ -21,24 +21,24 @@
 
     .plane {
       position: absolute;
-      width: 15vw; /* adjust size based on screen */
-      max-width: 300px;
-      bottom: 12%;
-      right: -25vw;
-      transform-origin: 30% 70%; /* rotate from rear of plane */
-      animation: fly 5.5s ease-in-out forwards;
+      width: 18vw;
+      max-width: 350px;
+      bottom: 16%;
+      right: -30vw;
+      transform-origin: 50% 80%; /* makes plane rotate from near center-bottom (Nose UP) */
+      animation: fly 6.5s ease-in-out forwards;
     }
 
     .overlay-text {
       position: absolute;
-      top: 10%;
+      top: 8%;
       width: 100%;
       text-align: center;
       font-family: 'Segoe UI', sans-serif;
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: white;
       text-shadow: 2px 2px 10px #000;
-      animation: textFade 4s ease-in-out forwards;
+      animation: textFade 5s ease-in-out forwards;
       opacity: 0;
     }
 
@@ -51,27 +51,27 @@
 
     @keyframes fly {
       0% {
-        right: -25vw;
-        bottom: 12%;
+        right: -30vw;
+        bottom: 16%;
         transform: rotate(0deg);
         opacity: 1;
       }
       40% {
-        right: 35vw;
-        bottom: 12%;
+        right: 30vw;
+        bottom: 16%;
         transform: rotate(0deg);
         opacity: 1;
       }
       70% {
-        right: 55vw;
-        bottom: 22%;
-        transform: rotate(-20deg);
+        right: 60vw;
+        bottom: 30%;
+        transform: rotate(-15deg); /* Nose up slightly */
         opacity: 1;
       }
       100% {
         right: 110vw;
-        bottom: 60%;
-        transform: rotate(-30deg);
+        bottom: 70%;
+        transform: rotate(-25deg);
         opacity: 0;
       }
     }
@@ -86,7 +86,7 @@
   <script>
     setTimeout(() => {
       window.location.href = "home.html";
-    }, 6500); // redirect after animation
+    }, 7000); // redirect after animation
   </script>
 </body>
 </html>
