@@ -8,7 +8,7 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Atomic+Age&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Lottie Player CDN -->
+  <!-- Lottie Player -->
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
   <style>
@@ -20,18 +20,21 @@
       text-align: center;
     }
 
-    .construction-banner {
-      background-color: #ffcc00;
-      color: black;
+    .banner {
+      background-color: #ffc400;
+      padding: 0.4rem;
       font-weight: bold;
-      padding: 0.7rem;
-      font-size: 1.1rem;
-      animation: blink 1.5s infinite;
+      font-size: 1rem;
+      color: black;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      animation: blink 1.2s infinite alternate;
     }
 
     @keyframes blink {
-      0%, 100% { background-color: #ffcc00; }
-      50% { background-color: #ffe066; }
+      from { opacity: 1; }
+      to { opacity: 0.7; }
     }
 
     header {
@@ -92,17 +95,30 @@
     .purple-outline { border-color: #8e24aa; }
     .teal-outline   { border-color: #00796b; }
 
-    .lottie-row {
+    .miniatures {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 2rem;
-      margin: 2rem auto 3rem;
+      padding: 2rem 1rem;
     }
 
-    lottie-player {
-      width: 140px;
-      height: 140px;
+    .miniatures lottie-player {
+      width: 120px;
+      height: 120px;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2.2rem; }
+      .tab {
+        width: 90px;
+        height: 90px;
+        font-size: 0.75rem;
+      }
+      .miniatures lottie-player {
+        width: 80px;
+        height: 80px;
+      }
     }
 
     section {
@@ -132,9 +148,10 @@
     .email { background-color: #1976d2; }
   </style>
 </head>
+
 <body>
 
-  <div class="construction-banner">
+  <div class="banner">
     🚧 👷‍♂️ DKWeb is under creative construction. Please stand by... 🚧
   </div>
 
@@ -154,10 +171,10 @@
     <a href="#contact" class="tab yellow-outline">CONTACT</a>
   </div>
 
-  <div class="lottie-row">
-    <lottie-player src="laptop_engineer.json" background="transparent" speed="1" loop autoplay></lottie-player>
-    <lottie-player src="cloud_construction.json" background="transparent" speed="1" loop autoplay></lottie-player>
-    <lottie-player src="ladder_worker.json" background="transparent" speed="1" loop autoplay></lottie-player>
+  <div class="miniatures">
+    <lottie-player src="laptop-engineer.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    <lottie-player src="jcb-digger.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    <lottie-player src="ladder-worker.json" background="transparent" speed="1" loop autoplay></lottie-player>
   </div>
 
   <section id="about">
