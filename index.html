@@ -8,9 +8,6 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Atomic+Age&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
 
-  <!-- Lottie Player -->
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
   <style>
     body {
       font-family: 'Ubuntu', sans-serif;
@@ -22,19 +19,28 @@
 
     .banner {
       background-color: #ffc400;
-      padding: 0.4rem;
-      font-weight: bold;
-      font-size: 1rem;
-      color: black;
+      overflow: hidden;
+      white-space: nowrap;
       position: sticky;
       top: 0;
       z-index: 1000;
-      animation: blink 1.2s infinite alternate;
+      height: 2.2rem;
+      display: flex;
+      align-items: center;
     }
 
-    @keyframes blink {
-      from { opacity: 1; }
-      to { opacity: 0.7; }
+    .scroll-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 15s linear infinite;
+      font-weight: bold;
+      font-size: 1rem;
+      color: black;
+    }
+
+    @keyframes scroll-left {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
     }
 
     header {
@@ -95,32 +101,6 @@
     .purple-outline { border-color: #8e24aa; }
     .teal-outline   { border-color: #00796b; }
 
-    .miniatures {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-      padding: 2rem 1rem;
-    }
-
-    .miniatures lottie-player {
-      width: 120px;
-      height: 120px;
-    }
-
-    @media (max-width: 768px) {
-      h1 { font-size: 2.2rem; }
-      .tab {
-        width: 90px;
-        height: 90px;
-        font-size: 0.75rem;
-      }
-      .miniatures lottie-player {
-        width: 80px;
-        height: 80px;
-      }
-    }
-
     section {
       background-color: #e6e6e6;
       padding: 2rem 1rem;
@@ -148,11 +128,12 @@
     .email { background-color: #1976d2; }
   </style>
 </head>
-
 <body>
 
   <div class="banner">
-    🚧 👷‍♂️ DKWeb is under creative construction. Please stand by... 🚧
+    <div class="scroll-text">
+      🚧 👷‍♂️ DKWeb is under creative construction. Please stand by... 🚧
+    </div>
   </div>
 
   <header>
@@ -169,12 +150,6 @@
     <a href="blog.html" class="tab yellow-outline">BLOG</a>
     <a href="poetry.html" class="tab teal-outline">POETRIES & SCRIPTS</a>
     <a href="#contact" class="tab yellow-outline">CONTACT</a>
-  </div>
-
-  <div class="miniatures">
-    <lottie-player src="laptop-engineer.json" background="transparent" speed="1" loop autoplay></lottie-player>
-    <lottie-player src="jcb-digger.json" background="transparent" speed="1" loop autoplay></lottie-player>
-    <lottie-player src="ladder-worker.json" background="transparent" speed="1" loop autoplay></lottie-player>
   </div>
 
   <section id="about">
