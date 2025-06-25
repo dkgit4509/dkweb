@@ -213,6 +213,66 @@
       });
     }
   </script>
+<!-- 🌗 Dark Mode Toggle Button -->
+<button id="theme-toggle" style="
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: inherit;
+  z-index: 9999;">🌙</button>
+
+<!-- 💬 WhatsApp Chat Button -->
+<a href="https://wa.me/918175996960" class="whatsapp-float" target="_blank" title="Chat on WhatsApp" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: white;
+  border-radius: 50%;
+  padding: 15px;
+  font-size: 1.8rem;
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  z-index: 9999;">💬</a>
+
+<!-- 🌗 Dark Mode Logic -->
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    toggle.textContent = '☀️';
+  }
+
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    toggle.textContent = isDark ? '☀️' : '🌙';
+  });
+</script>
+
+<!-- 🌗 Dark Mode Styles (Add in <style> or CSS file if not already there) -->
+<style>
+  :root {
+    --bg-color: #f0f2f5;
+    --text-color: #1a1a2e;
+    --card-bg: white;
+  }
+  body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #eeeeee;
+    --card-bg: #1e1e1e;
+  }
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+  }
+</style>
 
 </body>
 </html>
