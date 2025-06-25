@@ -2,28 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DKWeb - [Tab Name]</TV Series >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DKWeb - TV Series</title>
+
   <style>
+    :root {
+      --bg-color: #f0f2f5;
+      --text-color: #1a1a2e;
+      --card-bg: white;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #eeeeee;
+      --card-bg: #1e1e1e;
+    }
+
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f0f2f5;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       margin: 0;
-      padding: 2rem;
+      padding: 0;
       text-align: center;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    header {
+      background-color: #1a1a2e;
+      color: white;
+      padding: 1.5rem;
     }
 
     h1 {
-      font-size: 2.2rem;
-      color: #1a1a2e;
-      margin-top: 3rem;
+      margin: 0.5rem 0;
     }
 
-    p {
-      font-size: 1.2rem;
-      color: #444;
-      max-width: 600px;
-      margin: 1rem auto;
+    .filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+
+    select {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 1.5rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+
+    .card h3 {
+      margin: 0.5rem 0;
+    }
+
+    .rating {
+      background-color: #ffd700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 5px;
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-weight: bold;
     }
 
     /* Fixed Home Button */
@@ -46,89 +101,50 @@
     .home-button:hover {
       background-color: #333;
     }
-  </style>
-</head>
-<body>
 
-  <!-- Fixed Home Button -->
-  <a href="index.html" class="home-button">🏠 Home</a>
-
-  <!-- Page Content -->
-  <h1>[Tab Title Here]</h1>
-  <p>This section is under development. Content will appear here soon.</p>
-
-</body>
-</html>
-
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DKWeb - TV Series</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
+    /* 🌗 Dark Mode Toggle */
+    #theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: inherit;
+      z-index: 9999;
     }
 
-    header {
-      background-color: #1a1a2e;
+    /* 💬 WhatsApp Button (smaller version) */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
       color: white;
-      padding: 1.5rem;
-      text-align: center;
-    }
-
-    .filters {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin: 1rem;
-      flex-wrap: wrap;
-    }
-
-    select {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1.5rem;
-      padding: 1.5rem;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-    .card h3 {
-      margin: 0.5rem 0;
-    }
-
-    .rating {
-      background-color: #ffd700;
-      padding: 0.2rem 0.5rem;
-      border-radius: 5px;
-      display: inline-block;
-      margin-top: 0.5rem;
-      font-weight: bold;
+      border-radius: 50%;
+      padding: 10px;
+      font-size: 1.3rem;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 9999;
     }
   </style>
 </head>
 <body>
 
+  <!-- UI Buttons -->
+  <a href="index.html" class="home-button">🏠 Home</a>
+  <button id="theme-toggle">🌙</button>
+  <a href="https://wa.me/91817596960" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
+
+  <!-- Header -->
   <header>
     <h1>📺 TV Series Collection</h1>
-    <p>Filtered by Genre & Platform from Google Sheet</p>
+    <p>Filter by Genre & Platform from Google Sheet</p>
   </header>
 
+  <!-- Filters -->
   <div class="filters">
     <select id="genreFilter">
       <option value="">All Genres</option>
@@ -138,10 +154,10 @@
     </select>
   </div>
 
-  <div class="grid" id="showGrid">
-    <!-- TV series cards will appear here -->
-  </div>
+  <!-- Grid Container -->
+  <div class="grid" id="showGrid"></div>
 
+  <!-- JS Script -->
   <script>
     const SHEET_URL = "https://api.sheetbest.com/sheets/48ba8130-faac-45f3-b8cb-b13c09f6aa14";
     let allShows = [];
@@ -149,7 +165,7 @@
     fetch(SHEET_URL)
       .then(res => res.json())
       .then(data => {
-        allShows = data.filter(item => item.Name); // Only valid rows
+        allShows = data.filter(item => item.Name);
         populateFilters(allShows);
         renderShows(allShows);
       });
@@ -159,8 +175,8 @@
       const platformSet = new Set();
 
       data.forEach(item => {
-        if (item.Genre) genreSet.add(item.Genre.trim());
-        if (item.Platform) platformSet.add(item.Platform.trim());
+        if (item.Genre) item.Genre.split("/").forEach(g => genreSet.add(g.trim()));
+        if (item.Platform) item.Platform.split("/").forEach(p => platformSet.add(p.trim()));
       });
 
       const genreFilter = document.getElementById("genreFilter");
@@ -189,8 +205,13 @@
       const platformVal = document.getElementById("platformFilter").value;
 
       const filtered = allShows.filter(item => {
-        return (genreVal === "" || item.Genre === genreVal) &&
-               (platformVal === "" || item.Platform === platformVal);
+        const genres = item.Genre ? item.Genre.split("/").map(g => g.trim()) : [];
+        const platforms = item.Platform ? item.Platform.split("/").map(p => p.trim()) : [];
+
+        const genreMatch = genreVal === "" || genres.includes(genreVal);
+        const platformMatch = platformVal === "" || platforms.includes(platformVal);
+
+        return genreMatch && platformMatch;
       });
 
       renderShows(filtered);
@@ -213,66 +234,22 @@
       });
     }
   </script>
-<!-- 🌗 Dark Mode Toggle Button -->
-<button id="theme-toggle" style="
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  font-size: 1.4rem;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  color: inherit;
-  z-index: 9999;">🌙</button>
 
-<!-- 💬 WhatsApp Chat Button -->
-<a href="https://wa.me/918175996960" class="whatsapp-float" target="_blank" title="Chat on WhatsApp" style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #25D366;
-  color: white;
-  border-radius: 50%;
-  padding: 15px;
-  font-size: 1.8rem;
-  text-decoration: none;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  z-index: 9999;">💬</a>
+  <!-- Dark Mode Logic -->
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      toggle.textContent = '☀️';
+    }
 
-<!-- 🌗 Dark Mode Logic -->
-<script>
-  const toggle = document.getElementById('theme-toggle');
-  if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-mode');
-    toggle.textContent = '☀️';
-  }
-
-  toggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    const isDark = document.body.classList.contains('dark-mode');
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    toggle.textContent = isDark ? '☀️' : '🌙';
-  });
-</script>
-
-<!-- 🌗 Dark Mode Styles (Add in <style> or CSS file if not already there) -->
-<style>
-  :root {
-    --bg-color: #f0f2f5;
-    --text-color: #1a1a2e;
-    --card-bg: white;
-  }
-  body.dark-mode {
-    --bg-color: #121212;
-    --text-color: #eeeeee;
-    --card-bg: #1e1e1e;
-  }
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 0.3s, color 0.3s;
-  }
-</style>
+    toggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      toggle.textContent = isDark ? '☀️' : '🌙';
+    });
+  </script>
 
 </body>
 </html>
