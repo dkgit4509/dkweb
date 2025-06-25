@@ -4,63 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DKWeb - Home</title>
-
+  
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Atomic+Age&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Lottie Player -->
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
   <style>
+    :root {
+      --bg-main: #e6e6e6;
+      --header-bg: #1a1a2e;
+      --text-dark: #000;
+      --text-light: #fff;
+    }
+
     body {
       font-family: 'Ubuntu', sans-serif;
-      background-color: #e6e6e6;
+      background-color: var(--bg-main);
       margin: 0;
       padding: 0;
       text-align: center;
     }
 
     .banner {
-      background-color: #ffc400;
-      overflow: hidden;
-      white-space: nowrap;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      height: 2.2rem;
-      display: flex;
-      align-items: center;
-    }
-
-    .scroll-text {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll-left 15s linear infinite;
+      background-color: #ffcc00;
+      color: black;
       font-weight: bold;
       font-size: 1rem;
-      color: black;
+      padding: 0.5rem;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: scroll 12s linear infinite;
     }
 
-    @keyframes scroll-left {
-      0%   { transform: translateX(0); }
+    @keyframes scroll {
+      0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
 
     header {
       padding: 2rem 1rem;
-      background-color: #1a1a2e;
+      background-color: var(--header-bg);
       color: white;
     }
 
     h1 {
-      margin: 1rem 0;
       font-size: 3rem;
       font-family: 'Atomic Age', cursive;
-      letter-spacing: 1px;
-    }
-
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #1a1a2e;
-      font-family: 'Atomic Age', cursive;
+      margin: 0.5rem 0;
     }
 
     .tabs {
@@ -68,26 +60,25 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 1.2rem;
-      margin: 2rem;
+      margin: 2rem auto;
     }
 
     .tab {
       text-decoration: none;
-      color: black;
+      color: var(--text-dark);
       font-weight: bold;
       padding: 1rem;
       border: 3px solid;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       width: 120px;
       height: 120px;
-      font-size: 0.95rem;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background-color: white;
-      transition: transform 0.2s;
+      font-size: 0.9rem;
       font-family: 'Ubuntu', cursive;
+      transition: transform 0.2s;
     }
 
     .tab:hover {
@@ -101,9 +92,19 @@
     .purple-outline { border-color: #8e24aa; }
     .teal-outline   { border-color: #00796b; }
 
-    section {
-      background-color: #e6e6e6;
-      padding: 2rem 1rem;
+    .lottie-zone {
+      position: relative;
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .lottie-zone lottie-player {
+      width: 120px;
+      height: 120px;
     }
 
     #about p, #contact p {
@@ -126,15 +127,17 @@
     .whatsapp { background-color: #25D366; }
     .instagram { background-color: #E1306C; }
     .email { background-color: #1976d2; }
+
+    @media screen and (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .tab { width: 90px; height: 90px; font-size: 0.8rem; }
+      .lottie-zone lottie-player { width: 90px; height: 90px; }
+    }
   </style>
 </head>
-<body>
 
-  <div class="banner">
-    <div class="scroll-text">
-      🚧 👷‍♂️ DKWeb is under creative construction. Please stand by... 🚧
-    </div>
-  </div>
+<body>
+  <div class="banner">🚧 👷‍♂️ DKWeb is under creative construction. Please stand by... 🚧</div>
 
   <header>
     <h1>Welcome to DKWeb</h1>
@@ -150,6 +153,12 @@
     <a href="blog.html" class="tab yellow-outline">BLOG</a>
     <a href="poetry.html" class="tab teal-outline">POETRIES & SCRIPTS</a>
     <a href="#contact" class="tab yellow-outline">CONTACT</a>
+  </div>
+
+  <div class="lottie-zone">
+    <lottie-player src="laptop-engineer.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    <lottie-player src="jcb-digger.json" background="transparent" speed="1" loop autoplay></lottie-player>
+    <lottie-player src="ladder-worker.json" background="transparent" speed="1" loop autoplay></lottie-player>
   </div>
 
   <section id="about">
@@ -173,6 +182,5 @@
       <a href="mailto:dileepkryadav09@gmail.com" class="email">Email</a>
     </div>
   </section>
-
 </body>
 </html>
