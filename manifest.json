@@ -1,0 +1,21 @@
+{
+  "name": "DKloud",
+  "short_name": "DKloud",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#e6e6e6",
+  "theme_color": "#1a1a2e",
+  "description": "A creative cloud for tech, media, and learning",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
