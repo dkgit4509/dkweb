@@ -3,54 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dKloud - Tech Corner</title>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet" />
+  <title>Tech SOPs & Cheatsheets</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Ubuntu', sans-serif;
       margin: 0;
-      padding: 2rem 1rem;
-      background-color: #f4f4f9;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f8;
       color: #1a1a2e;
-    }
-    h1 {
       text-align: center;
+      padding-bottom: 4rem;
+    }
+
+    h1 {
       font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .category {
-      margin: 2rem auto;
-      max-width: 900px;
-      background: #fff;
-      border-radius: 10px;
-      padding: 1rem 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .category h2 {
-      font-size: 1.5rem;
-      color: #1976d2;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 0.5rem;
-    }
-    .item {
-      margin: 1rem 0;
-      padding: 0.75rem 1rem;
-      background: #f9f9f9;
-      border-left: 5px solid #43a047;
-      border-radius: 6px;
+      margin: 2rem 0 1rem;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
     }
-    .item span {
-      font-weight: bold;
+
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      gap: 1rem;
+      justify-content: center;
+      margin: 1rem;
+      padding: 1rem;
+    }
+
+    .tab-button {
+      background: #fff;
+      padding: 0.75rem 1.2rem;
+      border-radius: 999px;
+      border: 2px solid #1976d2;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .tab-button.active {
+      background-color: #1976d2;
+      color: white;
+    }
+
+    .category-section {
+      display: none;
+      max-width: 900px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .category-section.active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: left;
+    }
+
+    .card h3 {
+      margin: 0;
       font-size: 1.1rem;
     }
-    .item a {
+
+    .card a {
+      color: #d32f2f;
+      font-weight: 600;
       text-decoration: none;
-      color: #e53935;
-      font-weight: bold;
+      display: block;
       margin-top: 0.3rem;
     }
+
     .home-button {
       position: fixed;
       top: 15px;
@@ -62,79 +93,71 @@
       text-decoration: none;
       font-weight: bold;
       font-size: 14px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
       z-index: 9999;
+      transition: background-color 0.3s ease;
     }
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #25D366;
-      color: white;
-      border-radius: 50%;
-      padding: 15px;
-      font-size: 1.8rem;
-      text-decoration: none;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      z-index: 9999;
+
+    .home-button:hover {
+      background-color: #333;
     }
+
     @media (max-width: 768px) {
-      .item span { font-size: 1rem; }
-      h1 { font-size: 2rem; }
+      .tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
     }
   </style>
 </head>
 <body>
   <a href="index.html" class="home-button">🏠 Home</a>
-  <a href="https://wa.me/918175996960" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
 
   <h1>💻 Tech SOPs & Cheatsheets</h1>
-
+  <div class="tabs" id="tabs"></div>
   <div id="content"></div>
 
   <script>
-    const SHEET_URL = "https://api.sheetbest.com/sheets/a9b35d33-f03a-463d-8df6-8ae470fdcda7";
+    const apiUrl = "https://api.sheetbest.com/sheets/a9b35d33-f03a-463d-8df6-8ae470fdcda7";
 
-    const CATEGORIES = {
-      "Basic Computers": "📁 Basic Computers",
-      "Windows Server": "🖥 Windows Server",
-      "VMware": "☁ VMware & Virtualization",
-      "Cloud Computing": "🌩 Cloud (AWS, Azure, GCP)",
-      "Languages": "🐍 Programming Languages",
-      "Testing": "🧪 Testing & QA",
-      "Other": "🧠 Other Concepts"
-    };
+    async function loadSOPs() {
+      const res = await fetch(apiUrl);
+      const data = await res.json();
 
-    fetch(SHEET_URL)
-      .then(res => res.json())
-      .then(data => {
-        const container = document.getElementById("content");
-        const grouped = {};
+      const tabs = document.getElementById('tabs');
+      const content = document.getElementById('content');
 
-        data.forEach(item => {
-          const category = item.Category || "Other";
-          if (!grouped[category]) grouped[category] = [];
-          grouped[category].push(item);
+      const categories = [...new Set(data.map(d => d.Category.trim()))];
+
+      categories.forEach((category, index) => {
+        const tabBtn = document.createElement('button');
+        tabBtn.className = 'tab-button' + (index === 0 ? ' active' : '');
+        tabBtn.innerText = category;
+        tabBtn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.category-section').forEach(sec => sec.classList.remove('active'));
+          tabBtn.classList.add('active');
+          document.getElementById(category).classList.add('active');
         });
+        tabs.appendChild(tabBtn);
 
-        for (let cat in grouped) {
-          const catDiv = document.createElement("div");
-          catDiv.className = "category";
-          catDiv.innerHTML = `<h2>${CATEGORIES[cat] || cat}</h2>`;
+        const section = document.createElement('div');
+        section.className = 'category-section' + (index === 0 ? ' active' : '');
+        section.id = category;
+        const header = `<h2>📂 ${category}</h2>`;
+        section.innerHTML = header;
 
-          grouped[cat].forEach(entry => {
-            const block = document.createElement("div");
-            block.className = "item";
-            block.innerHTML = `
-              <span>${entry.Title || "Untitled"} (${entry.Type || "SOP"})</span>
-              <a href="${entry.Link}" target="_blank">📄 View Document</a>
-            `;
-            catDiv.appendChild(block);
-          });
-
-          container.appendChild(catDiv);
-        }
+        data.filter(d => d.Category.trim() === category).forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `<h3>${item.Title} (${item.Type})</h3><a href="${item.Link}" target="_blank">📄 View Document</a>`;
+          section.appendChild(card);
+        });
+        content.appendChild(section);
       });
+    }
+
+    loadSOPs();
   </script>
 </body>
 </html>
