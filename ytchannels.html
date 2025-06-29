@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>YT Channel Picks | dKloud</title>
+  <title>YT Channel Picks</title>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
-
   <style>
     body {
       font-family: 'Ubuntu', sans-serif;
@@ -17,7 +16,6 @@
 
     h1 {
       color: #1a1a2e;
-      margin-top: 4rem;
     }
 
     .tabs {
@@ -25,8 +23,7 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 0.6rem;
-      margin: 2rem auto;
-      max-width: 95%;
+      margin-bottom: 2rem;
     }
 
     .tab {
@@ -58,18 +55,11 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       width: 260px;
       text-align: left;
-      transition: transform 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
     }
 
     .card img {
       width: 100%;
       border-radius: 8px;
-      height: 140px;
-      object-fit: cover;
       margin-bottom: 0.5rem;
     }
 
@@ -114,7 +104,7 @@
   <div class="grid" id="channelGrid"></div>
 
   <script>
-    const SHEET_URL = "https://api.sheetbest.com/sheets/c66a0da1-d347-44f8-adc7-dc02c8627799";
+    const SHEET_URL = "https://api.sheetbest.com/sheets/1b0f8241-fd55-41d6-b70d-50ad6d8186a1"; // replace with your new working SheetBest URL
     let allChannels = [];
 
     fetch(SHEET_URL)
