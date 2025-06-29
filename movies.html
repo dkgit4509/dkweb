@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Movies | DKWeb</title>
+  <title>Movies | dKloud.in</title>
 
   <style>
     :root {
@@ -46,7 +46,7 @@
       margin: 2rem 0;
     }
 
-    select {
+    select, input[type="text"] {
       padding: 0.5rem;
       font-size: 1rem;
     }
@@ -66,6 +66,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       padding: 1.5rem;
       transition: background 0.3s;
+      text-align: left;
     }
 
     .card h3 {
@@ -78,7 +79,6 @@
       color: #f39c12;
     }
 
-    /* Fixed Home Button */
     .home-button {
       position: fixed;
       top: 15px;
@@ -92,14 +92,12 @@
       font-size: 14px;
       box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
       z-index: 9999;
-      transition: background-color 0.3s ease;
     }
 
     .home-button:hover {
       background-color: #333;
     }
 
-    /* 🌗 Dark Mode Toggle Button */
     #theme-toggle {
       position: fixed;
       top: 15px;
@@ -112,7 +110,6 @@
       z-index: 9999;
     }
 
-    /* 💬 WhatsApp Chat Button (smaller version) */
     .whatsapp-float {
       position: fixed;
       bottom: 20px;
@@ -130,31 +127,25 @@
 </head>
 <body>
 
-  <!-- Navigation Buttons -->
   <a href="index.html" class="home-button">🏠 Home</a>
   <button id="theme-toggle">🌙</button>
   <a href="https://wa.me/91817596960" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
 
-  <!-- Page Header -->
   <header>
     <h1>🎬 Must Watch Movies</h1>
-    <p>Use filters below to find movies by genre or platform</p>
+    <p>Search or filter by genre, language, platform, or awards</p>
   </header>
 
-  <!-- Filters -->
   <div class="filters">
-    <select id="genreFilter">
-      <option value="">Filter by Genre</option>
-    </select>
-    <select id="platformFilter">
-      <option value="">Filter by Platform</option>
-    </select>
+    <input type="text" id="searchInput" placeholder="🔍 Search by name..." />
+    <select id="genreFilter"><option value="">Genre</option></select>
+    <select id="platformFilter"><option value="">Platform</option></select>
+    <select id="languageFilter"><option value="">Language</option></select>
+    <select id="awardFilter"><option value="">Award</option></select>
   </div>
 
-  <!-- Movie Cards Grid -->
   <div id="showGrid"></div>
 
-  <!-- Movie Script -->
   <script>
     const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
     let allMovies = [];
@@ -162,53 +153,56 @@
     fetch(SHEET_URL)
       .then(res => res.json())
       .then(data => {
-        allMovies = data.filter(item => item.Name);
+        allMovies = data.filter(m => m.Name);
         populateFilters(allMovies);
         renderMovies(allMovies);
       });
 
     function populateFilters(data) {
-      const genreSet = new Set();
-      const platformSet = new Set();
+      const genres = new Set();
+      const platforms = new Set();
+      const languages = new Set();
+      const awards = new Set();
 
-      data.forEach(item => {
-        if (item.Genre) item.Genre.split("/").forEach(g => genreSet.add(g.trim()));
-        if (item.Platform) item.Platform.split("/").forEach(p => platformSet.add(p.trim()));
+      data.forEach(m => {
+        m.Genre?.split("/").forEach(g => genres.add(g.trim()));
+        m["Platform(s)"]?.split("/").forEach(p => platforms.add(p.trim()));
+        m["Language(s)"]?.split("/").forEach(l => languages.add(l.trim()));
+        m.Awards?.split("/").forEach(a => awards.add(a.trim()));
       });
 
-      const genreFilter = document.getElementById("genreFilter");
-      const platformFilter = document.getElementById("platformFilter");
+      populateSelect("genreFilter", genres);
+      populateSelect("platformFilter", platforms);
+      populateSelect("languageFilter", languages);
+      populateSelect("awardFilter", awards);
 
-      genreSet.forEach(genre => {
-        const option = document.createElement("option");
-        option.value = genre;
-        option.textContent = genre;
-        genreFilter.appendChild(option);
+      document.querySelectorAll("select").forEach(sel => sel.addEventListener("change", filterMovies));
+      document.getElementById("searchInput").addEventListener("input", filterMovies);
+    }
+
+    function populateSelect(id, set) {
+      const select = document.getElementById(id);
+      [...set].sort().forEach(val => {
+        const opt = document.createElement("option");
+        opt.value = val; opt.textContent = val;
+        select.appendChild(opt);
       });
-
-      platformSet.forEach(platform => {
-        const option = document.createElement("option");
-        option.value = platform;
-        option.textContent = platform;
-        platformFilter.appendChild(option);
-      });
-
-      genreFilter.addEventListener("change", filterMovies);
-      platformFilter.addEventListener("change", filterMovies);
     }
 
     function filterMovies() {
-      const genreVal = document.getElementById("genreFilter").value;
-      const platformVal = document.getElementById("platformFilter").value;
+      const genre = genreFilter.value;
+      const platform = platformFilter.value;
+      const lang = languageFilter.value;
+      const award = awardFilter.value;
+      const search = searchInput.value.toLowerCase();
 
-      const filtered = allMovies.filter(item => {
-        const genres = item.Genre ? item.Genre.split("/").map(g => g.trim()) : [];
-        const platforms = item.Platform ? item.Platform.split("/").map(p => p.trim()) : [];
-
-        const genreMatch = genreVal === "" || genres.includes(genreVal);
-        const platformMatch = platformVal === "" || platforms.includes(platformVal);
-
-        return genreMatch && platformMatch;
+      const filtered = allMovies.filter(m => {
+        const genreMatch = !genre || m.Genre?.includes(genre);
+        const platformMatch = !platform || m["Platform(s)"]?.includes(platform);
+        const langMatch = !lang || m["Language(s)"]?.includes(lang);
+        const awardMatch = !award || m.Awards?.includes(award);
+        const nameMatch = m.Name?.toLowerCase().includes(search);
+        return genreMatch && platformMatch && langMatch && awardMatch && nameMatch;
       });
 
       renderMovies(filtered);
@@ -217,29 +211,29 @@
     function renderMovies(data) {
       const container = document.getElementById("showGrid");
       container.innerHTML = "";
-
-      data.forEach(item => {
+      data.forEach(m => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-          <h3>${item.Name}</h3>
-          <p>🎭 ${item.Genre}</p>
-          <p>📺 ${item.Platform}</p>
-          <p class="rating">⭐ ${item.Rating}</p>
+          <h3>${m.Name}</h3>
+          <p>🎭 ${m.Genre || "-"}</p>
+          <p>🌐 ${m["Platform(s)"] || "-"}</p>
+          <p>🗣 ${m["Language(s)"] || "-"}</p>
+          <p>🏆 ${m.Awards || "-"}</p>
+          <p>🎬 Directed by ${m.Director || "N/A"} (${m.Year || "Year N/A"})</p>
+          <p class="rating">⭐ ${m["DKcloud Rating"] || "-"}</p>
         `;
         container.appendChild(card);
       });
     }
   </script>
 
-  <!-- Dark Mode Script -->
   <script>
     const toggle = document.getElementById('theme-toggle');
     if (localStorage.getItem('theme') === 'dark') {
       document.body.classList.add('dark-mode');
       toggle.textContent = '☀️';
     }
-
     toggle.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
       const isDark = document.body.classList.contains('dark-mode');
@@ -247,6 +241,5 @@
       toggle.textContent = isDark ? '☀️' : '🌙';
     });
   </script>
-
 </body>
 </html>
