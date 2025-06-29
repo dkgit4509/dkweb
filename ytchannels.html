@@ -1,45 +1,178 @@
-<script>
-  const SHEET_URL = "https://api.sheetbest.com/sheets/c66a0da1-d347-44f8-adc7-dc02c8627799";
-  let allChannels = [];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YTube Channel Picks | dKloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
 
-  fetch(SHEET_URL)
-    .then(res => res.json())
-    .then(data => {
-      allChannels = data.filter(item => item.Name && item.Category);
-      populateCategories(allChannels);
-      renderChannels(allChannels);
-    });
+  <style>
+    body {
+      font-family: 'Ubuntu', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 1rem;
+      text-align: center;
+    }
 
-  function populateCategories(data) {
-    const tabContainer = document.getElementById('categoryTabs');
-    const categories = [...new Set(data.map(item => item.Category.trim()))];
+    h1 {
+      color: #1a1a2e;
+      font-size: 2rem;
+      margin-top: 1rem;
+    }
 
-    categories.forEach(cat => {
-      const btn = document.createElement("div");
-      btn.className = "tab";
-      btn.textContent = cat;
-      btn.onclick = () => {
-        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-        btn.classList.add('active');
-        renderChannels(allChannels.filter(c => c.Category.trim() === cat));
-      };
-      tabContainer.appendChild(btn);
-    });
-  }
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      margin: 1.5rem 0;
+    }
 
-  function renderChannels(list) {
-    const container = document.getElementById("channelGrid");
-    container.innerHTML = "";
+    .tab {
+      padding: 0.6rem 1rem;
+      border: 2px solid #1976d2;
+      border-radius: 20px;
+      background-color: white;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
 
-    list.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${item.Image || 'https://via.placeholder.com/260x140'}" alt="${item.Name}" />
-        <h3>${item.Name}</h3>
-        <p>${item.Description || ''}</p>
-      `;
-      container.appendChild(card);
-    });
-  }
-</script>
+    .tab:hover, .tab.active {
+      background-color: #1976d2;
+      color: white;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .card {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 260px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      margin: 0.5rem 0 0.3rem;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #444;
+      height: 3.5rem;
+      overflow: hidden;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      background-color: #e53935;
+      color: white;
+      text-decoration: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .home-button {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background-color: #1a1a2e;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+      z-index: 9999;
+    }
+
+    @media(max-width: 768px){
+      .card { width: 90%; }
+      .tabs { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="home-button">🏠 Home</a>
+
+  <h1>📺 YTube Channel Picks</h1>
+
+  <div class="tabs" id="categoryTabs"></div>
+  <div class="grid" id="channelGrid"></div>
+
+  <script>
+    const SHEET_URL = "https://api.sheetbest.com/sheets/c66a0da1-d347-44f8-adc7-dc02c8627799";
+    let allChannels = [];
+
+    fetch(SHEET_URL)
+      .then(res => res.json())
+      .then(data => {
+        allChannels = data.filter(item => item.Name && item.Category);
+        populateCategories(allChannels);
+        renderChannels(allChannels); // Default render
+      });
+
+    function populateCategories(data) {
+      const tabContainer = document.getElementById('categoryTabs');
+      const categories = [...new Set(data.map(item => item.Category.trim()))];
+
+      categories.forEach(cat => {
+        const btn = document.createElement("div");
+        btn.className = "tab";
+        btn.textContent = cat;
+        btn.onclick = () => {
+          document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+          btn.classList.add('active');
+          renderChannels(allChannels.filter(c => c.Category.trim() === cat));
+        };
+        tabContainer.appendChild(btn);
+      });
+    }
+
+    function renderChannels(list) {
+      const container = document.getElementById("channelGrid");
+      container.innerHTML = "";
+
+      list.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${item['Logo (direct image URL)'] || 'https://via.placeholder.com/100'}" alt="${item.Name}" />
+          <h3>${item.Name}</h3>
+          <p>${item.Description || ''}</p>
+          <a href="${item['YouTube Link']}" target="_blank">Visit Channel</a>
+        `;
+        container.appendChild(card);
+      });
+    }
+  </script>
+
+</body>
+</html>
