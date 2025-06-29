@@ -2,39 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>dKloud - Tech Corner</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg-color: #f0f2f5;
-      --text-color: #1a1a2e;
-      --card-bg: white;
-    }
-
-    body.dark-mode {
-      --bg-color: #121212;
-      --text-color: #eeeeee;
-      --card-bg: #1e1e1e;
-    }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      font-family: 'Ubuntu', sans-serif;
       margin: 0;
       padding: 2rem 1rem;
-      text-align: center;
-      transition: background-color 0.3s, color 0.3s;
+      background-color: #f4f4f9;
+      color: #1a1a2e;
     }
-
     h1 {
-      font-size: 2.4rem;
-      margin-top: 3rem;
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
     }
-
+    .category {
+      margin: 2rem auto;
+      max-width: 900px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .category h2 {
+      font-size: 1.5rem;
+      color: #1976d2;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 0.5rem;
+    }
+    .item {
+      margin: 1rem 0;
+      padding: 0.75rem 1rem;
+      background: #f9f9f9;
+      border-left: 5px solid #43a047;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+    }
+    .item span {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .item a {
+      text-decoration: none;
+      color: #e53935;
+      font-weight: bold;
+      margin-top: 0.3rem;
+    }
     .home-button {
       position: fixed;
       top: 15px;
@@ -49,23 +65,6 @@
       box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
       z-index: 9999;
     }
-
-    .home-button:hover {
-      background-color: #333;
-    }
-
-    #theme-toggle {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      font-size: 1.4rem;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      color: var(--text-color);
-      z-index: 9999;
-    }
-
     .whatsapp-float {
       position: fixed;
       bottom: 20px;
@@ -79,132 +78,63 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
       z-index: 9999;
     }
-
-    .category {
-      margin-top: 2rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #1976d2;
-      border-bottom: 2px solid #ccc;
-      display: inline-block;
-      padding-bottom: 4px;
-    }
-
-    .sop-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
-      margin: 1rem auto 2rem;
-      max-width: 1000px;
-    }
-
-    .sop-card {
-      background-color: var(--card-bg);
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 250px;
-      text-align: left;
-      transition: transform 0.3s;
-    }
-
-    .sop-card:hover {
-      transform: scale(1.03);
-    }
-
-    .sop-card h3 {
-      margin: 0;
-      font-size: 1.1rem;
-    }
-
-    .sop-card p {
-      font-size: 0.9rem;
-      color: var(--text-color);
-      margin: 0.5rem 0;
-    }
-
-    .sop-card a {
-      color: #e53935;
-      font-weight: bold;
-      font-size: 0.9rem;
-      text-decoration: none;
-    }
-
-    .sop-card a:hover {
-      text-decoration: underline;
+    @media (max-width: 768px) {
+      .item span { font-size: 1rem; }
+      h1 { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Fixed Buttons -->
   <a href="index.html" class="home-button">🏠 Home</a>
-  <button id="theme-toggle">🌙</button>
   <a href="https://wa.me/918175996960" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
 
-  <!-- Header -->
-  <h1>💻 Tech Corner</h1>
+  <h1>💻 Tech SOPs & Cheatsheets</h1>
 
-  <!-- SOPs will load here -->
-  <div id="sopContainer"></div>
+  <div id="content"></div>
 
   <script>
-    const API_URL = "https://api.sheetbest.com/sheets/a9b35d33-f03a-463d-8df6-8ae470fdcda7";
+    const SHEET_URL = "https://api.sheetbest.com/sheets/a9b35d33-f03a-463d-8df6-8ae470fdcda7";
 
-    fetch(API_URL)
+    const CATEGORIES = {
+      "Basic Computers": "📁 Basic Computers",
+      "Windows Server": "🖥 Windows Server",
+      "VMware": "☁ VMware & Virtualization",
+      "Cloud Computing": "🌩 Cloud (AWS, Azure, GCP)",
+      "Languages": "🐍 Programming Languages",
+      "Testing": "🧪 Testing & QA",
+      "Other": "🧠 Other Concepts"
+    };
+
+    fetch(SHEET_URL)
       .then(res => res.json())
       .then(data => {
-        const container = document.getElementById("sopContainer");
-        const categories = {};
+        const container = document.getElementById("content");
+        const grouped = {};
 
         data.forEach(item => {
-          const { Category, Title, Link } = item;
-          if (!Category || !Title || !Link) return;
-
-          if (!categories[Category]) {
-            categories[Category] = [];
-          }
-          categories[Category].push({ title: Title, link: Link });
+          const category = item.Category || "Other";
+          if (!grouped[category]) grouped[category] = [];
+          grouped[category].push(item);
         });
 
-        Object.keys(categories).forEach(cat => {
-          const catTitle = document.createElement("div");
-          catTitle.className = "category";
-          catTitle.textContent = cat;
+        for (let cat in grouped) {
+          const catDiv = document.createElement("div");
+          catDiv.className = "category";
+          catDiv.innerHTML = `<h2>${CATEGORIES[cat] || cat}</h2>`;
 
-          const sopGrid = document.createElement("div");
-          sopGrid.className = "sop-grid";
-
-          categories[cat].forEach(sop => {
-            const card = document.createElement("div");
-            card.className = "sop-card";
-            card.innerHTML = `
-              <h3>${sop.title}</h3>
-              <p><a href="${sop.link}" target="_blank">📄 View SOP</a></p>
+          grouped[cat].forEach(entry => {
+            const block = document.createElement("div");
+            block.className = "item";
+            block.innerHTML = `
+              <span>${entry.Title || "Untitled"} (${entry.Type || "SOP"})</span>
+              <a href="${entry.Link}" target="_blank">📄 View Document</a>
             `;
-            sopGrid.appendChild(card);
+            catDiv.appendChild(block);
           });
 
-          container.appendChild(catTitle);
-          container.appendChild(sopGrid);
-        });
+          container.appendChild(catDiv);
+        }
       });
-
-    // Dark Mode Toggle
-    const toggle = document.getElementById('theme-toggle');
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark-mode');
-      toggle.textContent = '☀️';
-    }
-
-    toggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      toggle.textContent = isDark ? '☀️' : '🌙';
-    });
   </script>
-
 </body>
 </html>
