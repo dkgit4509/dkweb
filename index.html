@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DKLoud - Home</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="manifest" href="manifest.json">
+  <title>dKloud.in - Home</title>
+
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Atomic+Age&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Ubuntu', sans-serif;
@@ -68,6 +69,7 @@
       justify-content: center;
       gap: 1.2rem;
       margin: 2rem;
+      position: relative;
     }
 
     .tab {
@@ -85,12 +87,44 @@
       font-size: 0.95rem;
       text-align: center;
       background-color: white;
-      transition: transform 0.2s;
+      transition: transform 0.3s;
       font-family: 'Ubuntu', cursive;
+      position: relative;
     }
 
     .tab:hover {
-      transform: scale(1.05);
+      transform: scale(1.1);
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      bottom: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      flex-wrap: nowrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .tab:hover .dropdown {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dropdown a {
+      text-decoration: none;
+      color: #1a1a2e;
+      font-weight: bold;
+      background: #f0f2f5;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      white-space: nowrap;
     }
 
     .yellow-outline { border-color: #fbc02d; }
@@ -126,51 +160,91 @@
     .instagram { background-color: #E1306C; }
     .email { background-color: #1976d2; }
     .linkedin { background-color: #0077b5; }
+
+    @media (max-width: 768px) {
+      .tabs {
+        flex-direction: column;
+        align-items: center;
+      }
+      .tab {
+        width: 100px;
+        height: 100px;
+        font-size: 0.8rem;
+      }
+      .dropdown {
+        bottom: auto;
+        top: 110px;
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
 
   <div class="banner">
     <div class="scroll-text">
-      🚧 👷‍♂️ DKLoud is under creative construction. Please stand by... Stay tuned for AI, Cloud & Tech innovations 🚧
+      🚧 👷‍♂️ dKloud.in is under creative construction. Please stand by... Do you know? Sitaare Zameen Par is a Hindi remake of the 2018 Spanish film, Campeones 🚧
     </div>
   </div>
 
   <header>
-    <h1>Welcome to DKLoud</h1>
-    <p>Tech tools, creative resources, automation guides & more</p>
+    <h1>Welcome to dKloud.in</h1>
+    <p>Your destination for tech, creativity, and future thinking</p>
   </header>
 
   <div class="tabs">
     <div class="tab yellow-outline">
-      <a href="movies.html" style="text-decoration:none;color:inherit">MOVIES</a>
+      MOVIES & TV 📺
+      <div class="dropdown">
+        <a href="movies.html">🎬 Movies</a>
+        <a href="tvseries.html">📺 TV Series</a>
+      </div>
     </div>
-    <div class="tab blue-outline">
-      <a href="tvseries.html" style="text-decoration:none;color:inherit">TV SERIES</a>
-    </div>
+
     <div class="tab red-outline">
-      <a href="ytchannel.html" style="text-decoration:none;color:inherit">YTube Channel Picks</a>
+      YTube Channel Picks
+      <div class="dropdown">
+        <a href="#">💻 Tech</a>
+        <a href="#">🔬 Science & Space</a>
+        <a href="#">💰 Finance</a>
+        <a href="#">🗣 Communication</a>
+        <a href="#">🎓 Career & Learning</a>
+      </div>
     </div>
+
     <a href="tech.html" class="tab green-outline">TECH CORNER</a>
     <a href="ai.html" class="tab purple-outline">AI</a>
-    <a href="blog.html" class="tab yellow-outline">TECH NEWS</a>
-    <a href="songs.html" class="tab red-outline">MY SONGS</a>
-    <a href="poetry.html" class="tab teal-outline">POETRIES & SCRIPTS</a>
-    <a href="#contact" class="tab blue-outline">CONTACT</a>
+    <a href="blog.html" class="tab yellow-outline">BLOG</a>
+
+    <div class="tab yellow-outline">
+      MY PORTFOLIO
+      <div class="dropdown">
+        <a href="songs.html">🎵 My Songs</a>
+        <a href="poetry.html">📝 Poetries & Scripts</a>
+        <a href="#contact">📬 Contact</a>
+      </div>
+    </div>
   </div>
 
   <section id="about">
-    <h2>🚀 About Us</h2>
+    <h2>🌐 About Us</h2>
     <p>
-      DKLoud is a dynamic knowledge space built to share curated content across technology, creativity, and innovation.
-      Explore free SOPs, AI tools, cloud tutorials, media picks, and my creative portfolio — all at one place.
-      <br/><br/>
-      Whether you’re into system design, scripting, movie fan-lists, or tech learning — you’ll find something for you.
+      <strong>dKloud.in</strong> is more than just a website—it's a digital tech space built to inform, inspire, and empower.<br><br>
+      We're on a mission to blend creativity, cloud technology, AI, and community-driven learning into one cohesive platform. Whether you're a tech enthusiast, a creative mind, or a curious learner, you'll find something meaningful here.
+      <br><br>
+      🚀 <strong>What you’ll find:</strong><br>
+      • Curated movies & TV picks<br>
+      • Personal creations in music, poetry, and storytelling<br>
+      • Blogs and tutorials on cloud, AI, and modern tech<br>
+      • Thoughtful YouTube channel picks that expand your knowledge<br>
+      • Tools, tips, and experiences that connect tech with creativity
+      <br><br>
+      🎯 <strong>Next Goal:</strong> Launch a creative cloud-based learning & resource hub powered by AI & automation.
     </p>
   </section>
 
   <section id="contact">
-    <h2>📬 Contact</h2>
+    <h2>📬 Contact Us</h2>
     <div class="contact-buttons">
       <a href="https://wa.me/918175996960" class="whatsapp" target="_blank">WhatsApp</a>
       <a href="https://instagram.com/batbotdk09" class="instagram" target="_blank">Instagram</a>
