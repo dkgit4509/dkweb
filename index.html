@@ -89,42 +89,10 @@
       background-color: white;
       transition: transform 0.3s;
       font-family: 'Ubuntu', cursive;
-      position: relative;
     }
 
     .tab:hover {
       transform: scale(1.1);
-    }
-
-    .dropdown {
-      display: none;
-      position: absolute;
-      bottom: 130px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      border-radius: 12px;
-      padding: 0.5rem 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      z-index: 10;
-      flex-wrap: nowrap;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .tab:hover .dropdown {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .dropdown a {
-      text-decoration: none;
-      color: #1a1a2e;
-      font-weight: bold;
-      background: #f0f2f5;
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
-      white-space: nowrap;
     }
 
     .yellow-outline { border-color: #fbc02d; }
@@ -171,11 +139,6 @@
         height: 100px;
         font-size: 0.8rem;
       }
-      .dropdown {
-        bottom: auto;
-        top: 110px;
-        flex-direction: column;
-      }
     }
   </style>
 </head>
@@ -201,17 +164,7 @@
       </div>
     </div>
 
-    <div class="tab red-outline">
-      YTube Channel Picks
-      <div class="dropdown">
-        <a href="#">💻 Tech</a>
-        <a href="#">🔬 Science & Space</a>
-        <a href="#">💰 Finance</a>
-        <a href="#">🗣 Communication</a>
-        <a href="#">🎓 Career & Learning</a>
-      </div>
-    </div>
-
+    <a href="ytchannels.html" class="tab red-outline">YTube Channel Picks</a>
     <a href="tech.html" class="tab green-outline">TECH CORNER</a>
     <a href="ai.html" class="tab purple-outline">AI</a>
     <a href="blog.html" class="tab yellow-outline">BLOG</a>
