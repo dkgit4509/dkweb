@@ -147,7 +147,6 @@
   <div class="filters">
     <input type="text" id="searchInput" placeholder="🔍 Search by name">
     <select id="genreFilter"><option value="">🎭 Genre</option></select>
-    <select id="platformFilter"><option value="">📺 Platform</option></select>
     <select id="languageFilter"><option value="">🗣️ Language</option></select>
     <select id="awardFilter"><option value="">🏆 Awards</option></select>
   </div>
@@ -168,19 +167,16 @@
 
     function populateFilters(data) {
       const genreSet = new Set();
-      const platformSet = new Set();
       const languageSet = new Set();
       const awardsSet = new Set();
 
       data.forEach(item => {
         if (item.Genre) item.Genre.split(",").forEach(g => genreSet.add(g.trim()));
-        if (item["Platform(s)"]) item["Platform(s)"].split(",").forEach(p => platformSet.add(p.trim()));
         if (item.Language) languageSet.add(item.Language.trim());
         if (item.Awards) awardsSet.add(item.Awards.trim());
       });
 
       populateSelect("genreFilter", genreSet);
-      populateSelect("platformFilter", platformSet);
       populateSelect("languageFilter", languageSet);
       populateSelect("awardFilter", awardsSet);
 
@@ -203,18 +199,15 @@
 
     function filterMovies() {
       const genre = document.getElementById("genreFilter").value;
-      const platform = document.getElementById("platformFilter").value;
       const lang = document.getElementById("languageFilter").value;
       const award = document.getElementById("awardFilter").value;
       const keyword = document.getElementById("searchInput").value.toLowerCase();
 
       const filtered = allMovies.filter(item => {
         const genres = item.Genre ? item.Genre.split(",").map(g => g.trim()) : [];
-        const platforms = item["Platform(s)"] ? item["Platform(s)"].split(",").map(p => p.trim()) : [];
 
         return (
           (!genre || genres.includes(genre)) &&
-          (!platform || platforms.includes(platform)) &&
           (!lang || item.Language === lang) &&
           (!award || item.Awards === award) &&
           (!keyword || item.Name.toLowerCase().includes(keyword))
@@ -234,7 +227,6 @@
         card.innerHTML = `
           <h3>${item.Name}</h3>
           <p>🎭 Genre: ${item.Genre || 'N/A'}</p>
-          <p>📺 Platform: ${item["Platform(s)"] || 'N/A'}</p>
           <p>🗣️ Language: ${item.Language || 'N/A'}</p>
           <p>🏆 Awards: ${item.Awards || 'N/A'}</p>
           <p>⭐ <strong class="rating">Rating: ${item["DKcloud Rating"] || 'N/A'}</strong></p>
@@ -262,5 +254,6 @@
       toggle.textContent = isDark ? '☀️' : '🌙';
     });
   </script>
+
 </body>
 </html>
