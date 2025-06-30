@@ -2,103 +2,130 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🎬 Movies | dKloud</title>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎬 Must Watch Movies | dKloud.in</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Ubuntu', sans-serif;
       background-color: #f4f4f4;
-      color: #1a1a2e;
       margin: 0;
       padding: 0;
       text-align: center;
+      color: #1a1a1a;
     }
+
     header {
       background-color: #1a1a2e;
       color: white;
-      padding: 2rem 1rem;
+      padding: 2rem;
     }
+
     h1 {
       margin: 0;
+      font-size: 2rem;
     }
+
     .filters {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 1rem;
-      margin: 2rem 1rem;
+      margin: 1.5rem;
     }
+
     select, input[type="text"] {
       padding: 0.5rem;
-      font-size: 1rem;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid #ccc;
+      font-size: 1rem;
+      width: 180px;
     }
-    .grid {
+
+    #movieGrid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
       padding: 2rem;
       max-width: 1200px;
       margin: auto;
     }
+
     .card {
-      background: white;
-      padding: 1rem;
+      background-color: white;
+      padding: 1.2rem;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       text-align: left;
+      transition: transform 0.2s ease;
     }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
     .card h3 {
-      margin-top: 0;
+      margin: 0 0 0.4rem;
     }
-    .platforms, .details {
-      font-size: 0.9rem;
+
+    .card p {
       margin: 0.2rem 0;
+      font-size: 0.9rem;
     }
+
     .rating {
-      color: #e67e22;
       font-weight: bold;
+      color: #f39c12;
     }
-    .badge {
-      display: inline-block;
-      background-color: #1976d2;
+
+    .home-button {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background-color: #1a1a2e;
       color: white;
-      padding: 0.2rem 0.5rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      margin: 0.2rem;
+      padding: 10px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+      z-index: 999;
+    }
+
+    @media (max-width: 768px) {
+      .filters {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      input[type="text"], select {
+        width: 90%;
+      }
     }
   </style>
 </head>
 <body>
+
+  <a href="index.html" class="home-button">🏠 Home</a>
+
   <header>
-    <h1>🎬 Must-Watch Movies</h1>
-    <p>Filter by genre, language, awards or search by name</p>
+    <h1>🎬 Must Watch Movies</h1>
+    <p>Search & Filter by Genre, Language, Platform, Awards</p>
   </header>
 
+  <!-- Filters -->
   <div class="filters">
-    <input type="text" id="searchBox" placeholder="🔍 Search by name...">
-    <select id="genreFilter">
-      <option value="">🎭 Genre</option>
-    </select>
-    <select id="languageFilter">
-      <option value="">🈯 Language</option>
-      <option value="English">English</option>
-      <option value="Hindi">Hindi</option>
-      <option value="Hindi Dubbed">Hindi Dubbed</option>
-    </select>
-    <select id="awardFilter">
-      <option value="">🏆 Awards</option>
-      <option value="Oscar Winner">Oscar Winner</option>
-      <option value="Oscar Nominee">Oscar Nominee</option>
-      <option value="Critically Acclaimed">Critically Acclaimed</option>
-    </select>
+    <input type="text" id="searchInput" placeholder="🔍 Search by name" />
+    <select id="genreFilter"><option value="">🎭 Genre</option></select>
+    <select id="languageFilter"><option value="">🗣️ Language</option></select>
+    <select id="awardFilter"><option value="">🏆 Awards</option></select>
   </div>
 
-  <div class="grid" id="movieGrid"></div>
+  <!-- Grid -->
+  <div id="movieGrid"></div>
 
+  <!-- Script -->
   <script>
     const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
     let allMovies = [];
@@ -106,69 +133,80 @@
     fetch(SHEET_URL)
       .then(res => res.json())
       .then(data => {
-        allMovies = data.filter(item => item.Name);
-        renderFilters(allMovies);
+        allMovies = data.filter(row => row.Name);
+        populateFilters(allMovies);
         renderMovies(allMovies);
       });
 
-    function renderFilters(data) {
+    function populateFilters(data) {
       const genreSet = new Set();
+      const langSet = new Set();
+      const awardsSet = new Set();
+
       data.forEach(item => {
-        if (item.Genre) item.Genre.split(",").forEach(g => genreSet.add(g.trim()));
+        if (item.Genre) genreSet.add(item.Genre.trim());
+        if (item.Language) langSet.add(item.Language.trim());
+        if (item['Filterable Awards']) awardsSet.add(item['Filterable Awards'].trim());
       });
 
-      const genreFilter = document.getElementById("genreFilter");
-      genreSet.forEach(g => {
-        const opt = document.createElement("option");
-        opt.value = g;
-        opt.textContent = g;
-        genreFilter.appendChild(opt);
-      });
+      const fill = (selectId, set) => {
+        const sel = document.getElementById(selectId);
+        set.forEach(val => {
+          const opt = document.createElement('option');
+          opt.value = val;
+          opt.textContent = val;
+          sel.appendChild(opt);
+        });
+      };
 
-      document.getElementById("searchBox").addEventListener("input", filterMovies);
+      fill("genreFilter", genreSet);
+      fill("languageFilter", langSet);
+      fill("awardFilter", awardsSet);
+
       document.getElementById("genreFilter").addEventListener("change", filterMovies);
       document.getElementById("languageFilter").addEventListener("change", filterMovies);
       document.getElementById("awardFilter").addEventListener("change", filterMovies);
+      document.getElementById("searchInput").addEventListener("input", filterMovies);
     }
 
     function filterMovies() {
       const genre = document.getElementById("genreFilter").value;
       const lang = document.getElementById("languageFilter").value;
       const award = document.getElementById("awardFilter").value;
-      const keyword = document.getElementById("searchBox").value.toLowerCase();
+      const search = document.getElementById("searchInput").value.toLowerCase();
 
-      const filtered = allMovies.filter(m => {
-        const matchesGenre = !genre || (m.Genre && m.Genre.includes(genre));
-        const matchesLang = !lang || m.Language === lang;
-        const matchesAward = !award || (m["Filterable Awards"] && m["Filterable Awards"].includes(award));
-        const matchesSearch = !keyword || m.Name.toLowerCase().includes(keyword);
-        return matchesGenre && matchesLang && matchesAward && matchesSearch;
+      const filtered = allMovies.filter(movie => {
+        const g = movie.Genre?.toLowerCase() || '';
+        const l = movie.Language?.toLowerCase() || '';
+        const a = movie['Filterable Awards']?.toLowerCase() || '';
+        const n = movie.Name?.toLowerCase() || '';
+
+        return (
+          (genre === '' || g.includes(genre.toLowerCase())) &&
+          (lang === '' || l.includes(lang.toLowerCase())) &&
+          (award === '' || a.includes(award.toLowerCase())) &&
+          (search === '' || n.includes(search))
+        );
       });
 
       renderMovies(filtered);
     }
 
-    function renderMovies(movies) {
+    function renderMovies(data) {
       const grid = document.getElementById("movieGrid");
       grid.innerHTML = "";
-      movies.forEach(m => {
+
+      data.forEach(movie => {
         const card = document.createElement("div");
         card.className = "card";
-
-        const platforms = m["Platform(s)"] || "";
-        let emojis = "";
-        if (platforms.includes("Netflix")) emojis += "🎞️ Netflix ";
-        if (platforms.includes("Prime")) emojis += "📺 Prime Video ";
-        if (platforms.includes("Hotstar")) emojis += "🔥 Hotstar ";
-
         card.innerHTML = `
-          <h3>${m.Name}</h3>
-          <p class="platforms">${emojis}</p>
-          <p class="details">🎭 ${m.Genre || ""}</p>
-          <p class="details">🗣️ ${m.Language} | 🏳️ ${m["Origin Language"] || ""}</p>
-          <p class="details">🎬 ${m.Director || ""} (${m.Year || ""})</p>
-          <p class="details">🏅 ${m["Achievements"] || ""}</p>
-          <p class="rating">⭐ ${m["DKcloud"] || ""}</p>
+          <h3>🎬 ${movie.Name}</h3>
+          <p>🎭 <strong>Genre:</strong> ${movie.Genre}</p>
+          <p>📺 <strong>Platform:</strong> ${movie['Platform(s)']}</p>
+          <p>🗣️ <strong>Language:</strong> ${movie.Language} (${movie['Origin Language']})</p>
+          <p>🏆 <strong>Awards:</strong> ${movie['Filterable Awards']}</p>
+          <p>🎬 <strong>Director:</strong> ${movie.Director} (${movie.Year})</p>
+          <p class="rating">⭐ DKcloud Rating: ${movie['DKcloud Rating'] || 'N/A'}</p>
         `;
         grid.appendChild(card);
       });
