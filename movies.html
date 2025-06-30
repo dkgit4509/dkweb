@@ -2,149 +2,102 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Movies | dKloud.in</title>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎬 Movies | dKloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-color: #f0f2f5;
-      --text-color: #1a1a2e;
-      --card-bg: white;
-    }
-
-    body.dark-mode {
-      --bg-color: #121212;
-      --text-color: #eeeeee;
-      --card-bg: #1e1e1e;
-    }
-
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      font-family: 'Ubuntu', sans-serif;
+      background-color: #f4f4f4;
+      color: #1a1a2e;
       margin: 0;
       padding: 0;
       text-align: center;
-      transition: background-color 0.3s, color 0.3s;
     }
-
     header {
-      padding: 1.5rem;
       background-color: #1a1a2e;
       color: white;
+      padding: 2rem 1rem;
     }
-
     h1 {
-      margin: 0.5rem 0;
+      margin: 0;
     }
-
     .filters {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 1rem;
-      margin: 2rem 0;
+      margin: 2rem 1rem;
     }
-
     select, input[type="text"] {
       padding: 0.5rem;
       font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
-
-    #showGrid {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.5rem;
       padding: 2rem;
       max-width: 1200px;
       margin: auto;
     }
-
     .card {
-      background: var(--card-bg);
-      border-radius: 10px;
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-      transition: background 0.3s;
       text-align: left;
     }
-
     .card h3 {
       margin-top: 0;
-      font-size: 1.2rem;
     }
-
+    .platforms, .details {
+      font-size: 0.9rem;
+      margin: 0.2rem 0;
+    }
     .rating {
+      color: #e67e22;
       font-weight: bold;
-      color: #f39c12;
     }
-
-    .home-button {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      background-color: #1a1a1a;
+    .badge {
+      display: inline-block;
+      background-color: #1976d2;
       color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 14px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-      z-index: 9999;
-    }
-
-    .home-button:hover {
-      background-color: #333;
-    }
-
-    #theme-toggle {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      font-size: 1.4rem;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      color: inherit;
-      z-index: 9999;
-    }
-
-    .whatsapp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #25D366;
-      color: white;
-      border-radius: 50%;
-      padding: 10px;
-      font-size: 1.3rem;
-      text-decoration: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      z-index: 9999;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      margin: 0.2rem;
     }
   </style>
 </head>
 <body>
-
-  <a href="index.html" class="home-button">🏠 Home</a>
-  <button id="theme-toggle">🌙</button>
-  <a href="https://wa.me/91817596960" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
-
   <header>
-    <h1>🎬 Must Watch Movies</h1>
-    <p>Search or filter by genre, language, platform, or awards</p>
+    <h1>🎬 Must-Watch Movies</h1>
+    <p>Filter by genre, language, awards or search by name</p>
   </header>
 
   <div class="filters">
-    <input type="text" id="searchInput" placeholder="🔍 Search by name..." />
-    <select id="genreFilter"><option value="">Genre</option></select>
-    <select id="platformFilter"><option value="">Platform</option></select>
-    <select id="languageFilter"><option value="">Language</option></select>
-    <select id="awardFilter"><option value="">Award</option></select>
+    <input type="text" id="searchBox" placeholder="🔍 Search by name...">
+    <select id="genreFilter">
+      <option value="">🎭 Genre</option>
+    </select>
+    <select id="languageFilter">
+      <option value="">🈯 Language</option>
+      <option value="English">English</option>
+      <option value="Hindi">Hindi</option>
+      <option value="Hindi Dubbed">Hindi Dubbed</option>
+    </select>
+    <select id="awardFilter">
+      <option value="">🏆 Awards</option>
+      <option value="Oscar Winner">Oscar Winner</option>
+      <option value="Oscar Nominee">Oscar Nominee</option>
+      <option value="Critically Acclaimed">Critically Acclaimed</option>
+    </select>
   </div>
 
-  <div id="showGrid"></div>
+  <div class="grid" id="movieGrid"></div>
 
   <script>
     const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
@@ -153,93 +106,73 @@
     fetch(SHEET_URL)
       .then(res => res.json())
       .then(data => {
-        allMovies = data.filter(m => m.Name);
-        populateFilters(allMovies);
+        allMovies = data.filter(item => item.Name);
+        renderFilters(allMovies);
         renderMovies(allMovies);
       });
 
-    function populateFilters(data) {
-      const genres = new Set();
-      const platforms = new Set();
-      const languages = new Set();
-      const awards = new Set();
-
-      data.forEach(m => {
-        m.Genre?.split("/").forEach(g => genres.add(g.trim()));
-        m["Platform(s)"]?.split("/").forEach(p => platforms.add(p.trim()));
-        m["Language(s)"]?.split("/").forEach(l => languages.add(l.trim()));
-        m.Awards?.split("/").forEach(a => awards.add(a.trim()));
+    function renderFilters(data) {
+      const genreSet = new Set();
+      data.forEach(item => {
+        if (item.Genre) item.Genre.split(",").forEach(g => genreSet.add(g.trim()));
       });
 
-      populateSelect("genreFilter", genres);
-      populateSelect("platformFilter", platforms);
-      populateSelect("languageFilter", languages);
-      populateSelect("awardFilter", awards);
-
-      document.querySelectorAll("select").forEach(sel => sel.addEventListener("change", filterMovies));
-      document.getElementById("searchInput").addEventListener("input", filterMovies);
-    }
-
-    function populateSelect(id, set) {
-      const select = document.getElementById(id);
-      [...set].sort().forEach(val => {
+      const genreFilter = document.getElementById("genreFilter");
+      genreSet.forEach(g => {
         const opt = document.createElement("option");
-        opt.value = val; opt.textContent = val;
-        select.appendChild(opt);
+        opt.value = g;
+        opt.textContent = g;
+        genreFilter.appendChild(opt);
       });
+
+      document.getElementById("searchBox").addEventListener("input", filterMovies);
+      document.getElementById("genreFilter").addEventListener("change", filterMovies);
+      document.getElementById("languageFilter").addEventListener("change", filterMovies);
+      document.getElementById("awardFilter").addEventListener("change", filterMovies);
     }
 
     function filterMovies() {
-      const genre = genreFilter.value;
-      const platform = platformFilter.value;
-      const lang = languageFilter.value;
-      const award = awardFilter.value;
-      const search = searchInput.value.toLowerCase();
+      const genre = document.getElementById("genreFilter").value;
+      const lang = document.getElementById("languageFilter").value;
+      const award = document.getElementById("awardFilter").value;
+      const keyword = document.getElementById("searchBox").value.toLowerCase();
 
       const filtered = allMovies.filter(m => {
-        const genreMatch = !genre || m.Genre?.includes(genre);
-        const platformMatch = !platform || m["Platform(s)"]?.includes(platform);
-        const langMatch = !lang || m["Language(s)"]?.includes(lang);
-        const awardMatch = !award || m.Awards?.includes(award);
-        const nameMatch = m.Name?.toLowerCase().includes(search);
-        return genreMatch && platformMatch && langMatch && awardMatch && nameMatch;
+        const matchesGenre = !genre || (m.Genre && m.Genre.includes(genre));
+        const matchesLang = !lang || m.Language === lang;
+        const matchesAward = !award || (m["Filterable Awards"] && m["Filterable Awards"].includes(award));
+        const matchesSearch = !keyword || m.Name.toLowerCase().includes(keyword);
+        return matchesGenre && matchesLang && matchesAward && matchesSearch;
       });
 
       renderMovies(filtered);
     }
 
-    function renderMovies(data) {
-      const container = document.getElementById("showGrid");
-      container.innerHTML = "";
-      data.forEach(m => {
+    function renderMovies(movies) {
+      const grid = document.getElementById("movieGrid");
+      grid.innerHTML = "";
+      movies.forEach(m => {
         const card = document.createElement("div");
         card.className = "card";
+
+        const platforms = m["Platform(s)"] || "";
+        let emojis = "";
+        if (platforms.includes("Netflix")) emojis += "🎞️ Netflix ";
+        if (platforms.includes("Prime")) emojis += "📺 Prime Video ";
+        if (platforms.includes("Hotstar")) emojis += "🔥 Hotstar ";
+
         card.innerHTML = `
           <h3>${m.Name}</h3>
-          <p>🎭 ${m.Genre || "-"}</p>
-          <p>🌐 ${m["Platform(s)"] || "-"}</p>
-          <p>🗣 ${m["Language(s)"] || "-"}</p>
-          <p>🏆 ${m.Awards || "-"}</p>
-          <p>🎬 Directed by ${m.Director || "N/A"} (${m.Year || "Year N/A"})</p>
-          <p class="rating">⭐ ${m["DKcloud Rating"] || "-"}</p>
+          <p class="platforms">${emojis}</p>
+          <p class="details">🎭 ${m.Genre || ""}</p>
+          <p class="details">🗣️ ${m.Language} | 🏳️ ${m["Origin Language"] || ""}</p>
+          <p class="details">🎬 ${m.Director || ""} (${m.Year || ""})</p>
+          <p class="details">🏅 ${m["Achievements"] || ""}</p>
+          <p class="rating">⭐ ${m["DKcloud"] || ""}</p>
         `;
-        container.appendChild(card);
+        grid.appendChild(card);
       });
     }
-  </script>
-
-  <script>
-    const toggle = document.getElementById('theme-toggle');
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark-mode');
-      toggle.textContent = '☀️';
-    }
-    toggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      toggle.textContent = isDark ? '☀️' : '🌙';
-    });
   </script>
 </body>
 </html>
