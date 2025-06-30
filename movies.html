@@ -1,216 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🎬 Must Watch Movies | dKloud.in</title>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Ubuntu', sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      color: #1a1a1a;
-    }
+<!-- ✂️ Snippet from movies.html -->
+<!-- ...head + header stays same -->
 
-    header {
-      background-color: #1a1a2e;
-      color: white;
-      padding: 2rem;
-    }
+<!-- Filters -->
+<div class="filters">
+  <input type="text" id="searchInput" placeholder="🔍 Search by name" />
+  <select id="genreFilter"><option value="">🎭 Genre</option></select>
+  <select id="platformFilter"><option value="">📺 Platform</option></select>
+  <select id="languageFilter"><option value="">🗣️ Language</option></select>
+  <select id="awardFilter"><option value="">🏆 Awards</option></select>
+</div>
 
-    h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
+<!-- Grid -->
+<div id="movieGrid"></div>
 
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin: 1.5rem;
-    }
+<script>
+  const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
+  let allMovies = [];
 
-    select, input[type="text"] {
-      padding: 0.5rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-      width: 180px;
-    }
+  fetch(SHEET_URL)
+    .then(res => res.json())
+    .then(data => {
+      allMovies = data.filter(row => row.Name);
+      populateFilters(allMovies);
+      renderMovies(allMovies);
+    });
 
-    #movieGrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: auto;
-    }
+  function populateFilters(data) {
+    const genreSet = new Set();
+    const platformSet = new Set();
+    const langSet = new Set();
+    const awardsSet = new Set();
 
-    .card {
-      background-color: white;
-      padding: 1.2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      text-align: left;
-      transition: transform 0.2s ease;
-    }
+    data.forEach(item => {
+      if (item.Genre) genreSet.add(item.Genre.trim());
+      if (item['Platform(s)']) item['Platform(s)'].split(",").forEach(p => platformSet.add(p.trim()));
+      if (item.Language) langSet.add(item.Language.trim());
+      if (item.Awards) awardsSet.add(item.Awards.trim());
+    });
 
-    .card:hover {
-      transform: scale(1.02);
-    }
-
-    .card h3 {
-      margin: 0 0 0.4rem;
-    }
-
-    .card p {
-      margin: 0.2rem 0;
-      font-size: 0.9rem;
-    }
-
-    .rating {
-      font-weight: bold;
-      color: #f39c12;
-    }
-
-    .home-button {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      background-color: #1a1a2e;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 14px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-      z-index: 999;
-    }
-
-    @media (max-width: 768px) {
-      .filters {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      input[type="text"], select {
-        width: 90%;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <a href="index.html" class="home-button">🏠 Home</a>
-
-  <header>
-    <h1>🎬 Must Watch Movies</h1>
-    <p>Search & Filter by Genre, Language, Platform, Awards</p>
-  </header>
-
-  <!-- Filters -->
-  <div class="filters">
-    <input type="text" id="searchInput" placeholder="🔍 Search by name" />
-    <select id="genreFilter"><option value="">🎭 Genre</option></select>
-    <select id="languageFilter"><option value="">🗣️ Language</option></select>
-    <select id="awardFilter"><option value="">🏆 Awards</option></select>
-  </div>
-
-  <!-- Grid -->
-  <div id="movieGrid"></div>
-
-  <!-- Script -->
-  <script>
-    const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
-    let allMovies = [];
-
-    fetch(SHEET_URL)
-      .then(res => res.json())
-      .then(data => {
-        allMovies = data.filter(row => row.Name);
-        populateFilters(allMovies);
-        renderMovies(allMovies);
+    const fill = (id, set) => {
+      const el = document.getElementById(id);
+      set.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v;
+        opt.textContent = v;
+        el.appendChild(opt);
       });
+    };
 
-    function populateFilters(data) {
-      const genreSet = new Set();
-      const langSet = new Set();
-      const awardsSet = new Set();
+    fill("genreFilter", genreSet);
+    fill("platformFilter", platformSet);
+    fill("languageFilter", langSet);
+    fill("awardFilter", awardsSet);
 
-      data.forEach(item => {
-        if (item.Genre) genreSet.add(item.Genre.trim());
-        if (item.Language) langSet.add(item.Language.trim());
-        if (item['Filterable Awards']) awardsSet.add(item['Filterable Awards'].trim());
-      });
+    document.getElementById("searchInput").addEventListener("input", filterMovies);
+    ["genreFilter", "platformFilter", "languageFilter", "awardFilter"].forEach(id =>
+      document.getElementById(id).addEventListener("change", filterMovies)
+    );
+  }
 
-      const fill = (selectId, set) => {
-        const sel = document.getElementById(selectId);
-        set.forEach(val => {
-          const opt = document.createElement('option');
-          opt.value = val;
-          opt.textContent = val;
-          sel.appendChild(opt);
-        });
-      };
+  function filterMovies() {
+    const genre = document.getElementById("genreFilter").value;
+    const platform = document.getElementById("platformFilter").value;
+    const language = document.getElementById("languageFilter").value;
+    const awards = document.getElementById("awardFilter").value;
+    const search = document.getElementById("searchInput").value.toLowerCase();
 
-      fill("genreFilter", genreSet);
-      fill("languageFilter", langSet);
-      fill("awardFilter", awardsSet);
+    const filtered = allMovies.filter(movie => {
+      const genreMatch = !genre || movie.Genre?.includes(genre);
+      const platformMatch = !platform || movie['Platform(s)']?.includes(platform);
+      const langMatch = !language || movie.Language?.includes(language);
+      const awardMatch = !awards || movie.Awards?.includes(awards);
+      const searchMatch = !search || movie.Name?.toLowerCase().includes(search);
 
-      document.getElementById("genreFilter").addEventListener("change", filterMovies);
-      document.getElementById("languageFilter").addEventListener("change", filterMovies);
-      document.getElementById("awardFilter").addEventListener("change", filterMovies);
-      document.getElementById("searchInput").addEventListener("input", filterMovies);
-    }
+      return genreMatch && platformMatch && langMatch && awardMatch && searchMatch;
+    });
 
-    function filterMovies() {
-      const genre = document.getElementById("genreFilter").value;
-      const lang = document.getElementById("languageFilter").value;
-      const award = document.getElementById("awardFilter").value;
-      const search = document.getElementById("searchInput").value.toLowerCase();
+    renderMovies(filtered);
+  }
 
-      const filtered = allMovies.filter(movie => {
-        const g = movie.Genre?.toLowerCase() || '';
-        const l = movie.Language?.toLowerCase() || '';
-        const a = movie['Filterable Awards']?.toLowerCase() || '';
-        const n = movie.Name?.toLowerCase() || '';
+  function renderMovies(list) {
+    const grid = document.getElementById("movieGrid");
+    grid.innerHTML = "";
 
-        return (
-          (genre === '' || g.includes(genre.toLowerCase())) &&
-          (lang === '' || l.includes(lang.toLowerCase())) &&
-          (award === '' || a.includes(award.toLowerCase())) &&
-          (search === '' || n.includes(search))
-        );
-      });
-
-      renderMovies(filtered);
-    }
-
-    function renderMovies(data) {
-      const grid = document.getElementById("movieGrid");
-      grid.innerHTML = "";
-
-      data.forEach(movie => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>🎬 ${movie.Name}</h3>
-          <p>🎭 <strong>Genre:</strong> ${movie.Genre}</p>
-          <p>📺 <strong>Platform:</strong> ${movie['Platform(s)']}</p>
-          <p>🗣️ <strong>Language:</strong> ${movie.Language} (${movie['Origin Language']})</p>
-          <p>🏆 <strong>Awards:</strong> ${movie['Filterable Awards']}</p>
-          <p>🎬 <strong>Director:</strong> ${movie.Director} (${movie.Year})</p>
-          <p class="rating">⭐ DKloud Rating: ${movie['DKcloud Rating'] || 'N/A'}</p>
-        `;
-        grid.appendChild(card);
-      });
-    }
-  </script>
-</body>
-</html>
+    list.forEach(movie => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>🎬 ${movie.Name}</h3>
+        <p>🎭 <strong>Genre:</strong> ${movie.Genre}</p>
+        <p>📺 <strong>Platform:</strong> ${movie['Platform(s)']}</p>
+        <p>🗣️ <strong>Language:</strong> ${movie.Language} (${movie['Origin Language']})</p>
+        <p>🏆 <strong>Awards:</strong> ${movie.Awards}</p>
+        <p>🎬 <strong>Director:</strong> ${movie.Director} (${movie.Year})</p>
+        <p class="rating">⭐ DKcloud Rating: ${movie['DKcloud Rating'] || 'N/A'}</p>
+      `;
+      grid.appendChild(card);
+    });
+  }
+</script>
