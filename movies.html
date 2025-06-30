@@ -3,23 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🎬 Movies | dKloud.in</title>
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet" />
+  <title>Movies | DKWeb</title>
 
   <style>
+    :root {
+      --bg-color: #f0f2f5;
+      --text-color: #1a1a2e;
+      --card-bg: white;
+    }
+
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #eeeeee;
+      --card-bg: #1e1e1e;
+    }
+
     body {
-      font-family: 'Ubuntu', sans-serif;
-      background-color: #f0f2f5;
-      color: #1a1a2e;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       margin: 0;
       padding: 0;
       text-align: center;
       transition: background-color 0.3s, color 0.3s;
-    }
-
-    body.dark-mode {
-      background-color: #121212;
-      color: #eeeeee;
     }
 
     header {
@@ -34,10 +40,10 @@
 
     .filters {
       display: flex;
-      flex-wrap: wrap;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 1rem;
-      margin: 1.5rem;
+      margin: 2rem 0;
     }
 
     select, input[type="text"] {
@@ -48,30 +54,26 @@
       min-width: 160px;
     }
 
-    #movieGrid {
+    #showGrid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
       padding: 2rem;
       max-width: 1200px;
       margin: auto;
     }
 
     .card {
-      background: white;
-      border-radius: 12px;
+      background: var(--card-bg);
+      border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 1.2rem;
-      text-align: left;
+      padding: 1.5rem;
       transition: background 0.3s;
     }
 
-    body.dark-mode .card {
-      background: #1e1e1e;
-    }
-
     .card h3 {
-      margin: 0.2rem 0 0.6rem;
+      margin-top: 0;
+      font-size: 1.2rem;
     }
 
     .rating {
@@ -79,7 +81,6 @@
       color: #f39c12;
     }
 
-    /* Fixed Home Button */
     .home-button {
       position: fixed;
       top: 15px;
@@ -93,12 +94,9 @@
       font-size: 14px;
       box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
       z-index: 9999;
-      transition: background-color 0.3s ease;
     }
 
-    .home-button:hover {
-      background-color: #333;
-    }
+    .home-button:hover { background-color: #333; }
 
     #theme-toggle {
       position: fixed;
@@ -119,8 +117,8 @@
       background: #25D366;
       color: white;
       border-radius: 50%;
-      padding: 12px;
-      font-size: 1.4rem;
+      padding: 10px;
+      font-size: 1.3rem;
       text-decoration: none;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       z-index: 9999;
@@ -129,119 +127,124 @@
 </head>
 <body>
 
-  <a href="index.html" class="home-button">🏠 Home</a>
-  <button id="theme-toggle">🌙</button>
-  <a href="https://wa.me/91817596960" class="whatsapp-float" target="_blank" title="Chat on WhatsApp">💬</a>
+<a href="index.html" class="home-button">🏠 Home</a>
+<button id="theme-toggle">🌙</button>
+<a href="https://wa.me/91817596960" class="whatsapp-float" target="_blank">💬</a>
 
-  <header>
-    <h1>🎬 Must-Watch Movies</h1>
-    <p>Browse & filter movies by genre, platform, awards and more</p>
-  </header>
+<header>
+  <h1>🎬 Must Watch Movies</h1>
+  <p>Use filters below to explore movies by genre, language, platform & awards</p>
+</header>
 
-  <div class="filters">
-    <input type="text" id="searchInput" placeholder="🔍 Search by name" />
-    <select id="genreFilter"><option value="">🎭 Genre</option></select>
-    <select id="platformFilter"><option value="">📺 Platform</option></select>
-    <select id="languageFilter"><option value="">🗣️ Language</option></select>
-    <select id="awardFilter"><option value="">🏆 Awards</option></select>
-  </div>
+<div class="filters">
+  <input type="text" id="searchInput" placeholder="🔍 Search by name" />
+  <select id="genreFilter"><option value="">🎭 Genre</option></select>
+  <select id="platformFilter"><option value="">📺 Platform</option></select>
+  <select id="languageFilter"><option value="">🗣 Language</option></select>
+  <select id="awardFilter"><option value="">🏆 Awards</option></select>
+</div>
 
-  <div id="movieGrid"></div>
+<div id="showGrid"></div>
 
-  <script>
-    const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
-    let allMovies = [];
+<script>
+const SHEET_URL = "https://api.sheetbest.com/sheets/7e4985fe-430a-47f0-b328-394bd58af9c7";
+let allMovies = [];
 
-    fetch(SHEET_URL)
-      .then(res => res.json())
-      .then(data => {
-        allMovies = data.filter(item => item.Name);
-        populateFilters(allMovies);
-        renderMovies(allMovies);
-      });
+fetch(SHEET_URL)
+  .then(res => res.json())
+  .then(data => {
+    allMovies = data.filter(item => item.Name);
+    populateFilters(allMovies);
+    renderMovies(allMovies);
+  });
 
-    function populateFilters(data) {
-      const genreSet = new Set(), platformSet = new Set(), langSet = new Set(), awardsSet = new Set();
+function populateFilters(data) {
+  const genreSet = new Set();
+  const platformSet = new Set();
+  const languageSet = new Set();
+  const awardSet = new Set();
 
-      data.forEach(item => {
-        if (item.Genre) genreSet.add(item.Genre.trim());
-        if (item.Platform) item.Platform.split(",").forEach(p => platformSet.add(p.trim()));
-        if (item.Language) langSet.add(item.Language.trim());
-        if (item.Awards) awardsSet.add(item.Awards.trim());
-      });
+  data.forEach(item => {
+    if (item.Genre) genreSet.add(item.Genre.trim());
+    if (item.Platform) item.Platform.split(",").forEach(p => platformSet.add(p.trim()));
+    if (item.Language) languageSet.add(item.Language.trim());
+    if (item.Awards) awardSet.add(item.Awards.trim());
+  });
 
-      const fill = (id, set) => {
-        const el = document.getElementById(id);
-        [...set].forEach(v => {
-          const opt = document.createElement('option');
-          opt.value = v;
-          opt.textContent = v;
-          el.appendChild(opt);
-        });
-      };
-
-      fill("genreFilter", genreSet);
-      fill("platformFilter", platformSet);
-      fill("languageFilter", langSet);
-      fill("awardFilter", awardsSet);
-
-      document.getElementById("searchInput").addEventListener("input", filterMovies);
-      ["genreFilter", "platformFilter", "languageFilter", "awardFilter"].forEach(id =>
-        document.getElementById(id).addEventListener("change", filterMovies)
-      );
-    }
-
-    function filterMovies() {
-      const genre = document.getElementById("genreFilter").value;
-      const platform = document.getElementById("platformFilter").value;
-      const language = document.getElementById("languageFilter").value;
-      const awards = document.getElementById("awardFilter").value;
-      const search = document.getElementById("searchInput").value.toLowerCase();
-
-      const filtered = allMovies.filter(item => {
-        const genreMatch = !genre || item.Genre?.includes(genre);
-        const platformMatch = !platform || item.Platform?.includes(platform);
-        const langMatch = !language || item.Language?.includes(language);
-        const awardsMatch = !awards || item.Awards?.includes(awards);
-        const searchMatch = !search || item.Name?.toLowerCase().includes(search);
-        return genreMatch && platformMatch && langMatch && awardsMatch && searchMatch;
-      });
-
-      renderMovies(filtered);
-    }
-
-    function renderMovies(data) {
-      const container = document.getElementById("movieGrid");
-      container.innerHTML = "";
-
-      data.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>🎬 ${item.Name}</h3>
-          <p>🎭 <strong>Genre:</strong> ${item.Genre}</p>
-          <p>📺 <strong>Platform:</strong> ${item.Platform}</p>
-          <p>🗣️ <strong>Language:</strong> ${item.Language} (${item['Origin Language']})</p>
-          <p>🏆 <strong>Awards:</strong> ${item.Awards}</p>
-          <p>🎬 <strong>Director:</strong> ${item.Director} (${item.Year})</p>
-          <p class="rating">⭐ DKcloud Rating: ${item['DKcloud Rating'] || 'N/A'}</p>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    const toggle = document.getElementById('theme-toggle');
-    if (localStorage.getItem('theme') === 'dark') {
-      document.body.classList.add('dark-mode');
-      toggle.textContent = '☀️';
-    }
-    toggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      toggle.textContent = isDark ? '☀️' : '🌙';
+  const addOptions = (id, set) => {
+    const el = document.getElementById(id);
+    set.forEach(val => {
+      const opt = document.createElement("option");
+      opt.value = val;
+      opt.textContent = val;
+      el.appendChild(opt);
     });
-  </script>
+  };
+
+  addOptions("genreFilter", genreSet);
+  addOptions("platformFilter", platformSet);
+  addOptions("languageFilter", languageSet);
+  addOptions("awardFilter", awardSet);
+
+  document.getElementById("genreFilter").addEventListener("change", filterMovies);
+  document.getElementById("platformFilter").addEventListener("change", filterMovies);
+  document.getElementById("languageFilter").addEventListener("change", filterMovies);
+  document.getElementById("awardFilter").addEventListener("change", filterMovies);
+  document.getElementById("searchInput").addEventListener("input", filterMovies);
+}
+
+function filterMovies() {
+  const genreVal = document.getElementById("genreFilter").value;
+  const platformVal = document.getElementById("platformFilter").value;
+  const languageVal = document.getElementById("languageFilter").value;
+  const awardVal = document.getElementById("awardFilter").value;
+  const searchVal = document.getElementById("searchInput").value.toLowerCase();
+
+  const filtered = allMovies.filter(item => {
+    const matchGenre = !genreVal || item.Genre?.includes(genreVal);
+    const matchPlatform = !platformVal || item.Platform?.includes(platformVal);
+    const matchLang = !languageVal || item.Language?.includes(languageVal);
+    const matchAward = !awardVal || item.Awards?.includes(awardVal);
+    const matchSearch = !searchVal || item.Name?.toLowerCase().includes(searchVal);
+    return matchGenre && matchPlatform && matchLang && matchAward && matchSearch;
+  });
+
+  renderMovies(filtered);
+}
+
+function renderMovies(data) {
+  const container = document.getElementById("showGrid");
+  container.innerHTML = "";
+
+  data.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${item.Name}</h3>
+      <p>🎭 Genre: ${item.Genre}</p>
+      <p>📺 Platform: ${item.Platform}</p>
+      <p>🗣 Language: ${item.Language}</p>
+      <p>🏆 Awards: ${item.Awards}</p>
+      <p class="rating">⭐ Rating: ${item["DKcloud Rating"] || 'N/A'}</p>
+    `;
+    container.appendChild(card);
+  });
+}
+</script>
+
+<script>
+const toggle = document.getElementById('theme-toggle');
+if (localStorage.getItem('theme') === 'dark') {
+  document.body.classList.add('dark-mode');
+  toggle.textContent = '☀️';
+}
+toggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.contains('dark-mode');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  toggle.textContent = isDark ? '☀️' : '🌙';
+});
+</script>
 
 </body>
 </html>
