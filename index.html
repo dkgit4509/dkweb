@@ -261,6 +261,57 @@
   <footer style="background-color: #1a1a2e; color: white; padding: 1rem 0; font-size: 0.9rem;">
     <p>&copy; 2025 dKloud.in. Built with ❤️ to merge tech, creativity & curiosity.</p>
   </footer>
+<!-- 🤖 AI Assistant Toggle Button -->
+<style>
+  #ai-chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #1a1a2e;
+    color: #fff;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 9999;
+    cursor: pointer;
+  }
+  #hf-chat-frame {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 360px;
+    height: 500px;
+    border: none;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border-radius: 12px;
+  }
+</style>
+
+<!-- Hugging Face Chat UI -->
+<iframe
+  id="hf-chat-frame"
+  src="https://yuntian-deng-chatgpt.hf.space"
+  title="HuggingFace Chat"
+  allow="clipboard-write"
+></iframe>
+
+<button id="ai-chat-toggle">🤖 Chat with AI</button>
+
+<script>
+  const btn = document.getElementById('ai-chat-toggle');
+  const iframe = document.getElementById('hf-chat-frame');
+  let chatVisible = false;
+  btn.addEventListener('click', () => {
+    chatVisible = !chatVisible;
+    iframe.style.display = chatVisible ? 'block' : 'none';
+    btn.textContent = chatVisible ? '❌ Close AI' : '🤖 Chat with AI';
+  });
+</script>
 
 </body>
 </html>
